@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,10 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.enjoytrip.dto.TripBoardDto;
 import com.ssafy.enjoytrip.service.TripBoardServcie;
 
+import lombok.extern.slf4j.Slf4j;
+
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/tripboard")
+@Slf4j
 public class TripBoardController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(TripBoardController.class);
 	private TripBoardServcie tripBoardService;
 
 	@Autowired
@@ -33,8 +41,12 @@ public class TripBoardController {
 	}
 	
 	@PostMapping("/write")
+//	public ResponseEntity<?> writeArticle(@RequestBody String board) {
+//		logger.info("writeArticle TripBoardDto - {}", board.);
+//		return new ResponseEntity<Void>(HttpStatus.CREATED);
+//	}
 	public ResponseEntity<?> writeArticle(@RequestBody TripBoardDto board) {
-		
+		logger.info("writeArticle TripBoardDto - {}", board);
 		Map<String,Object> map = new HashMap();
 		try {
 			tripBoardService.writeArticle(board);
@@ -63,6 +75,7 @@ public class TripBoardController {
 	
 	@GetMapping("/view/{articleno}")
 	public ResponseEntity<?> getArticle(@PathVariable("articleno") int articleNo, @RequestParam Map<String, String> map) {
+		logger.info("getArticle articleNo - {}", articleNo);
 		try {
 			TripBoardDto boardDto = tripBoardService.getArticle(articleNo);
 			tripBoardService.updateHit(articleNo);
