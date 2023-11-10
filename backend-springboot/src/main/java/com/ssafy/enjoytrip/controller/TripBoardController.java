@@ -61,8 +61,13 @@ public class TripBoardController {
 	public ResponseEntity<?> listArticle(@RequestParam Map<String, String> map) {
 		try {
 			List<TripBoardDto> list = tripBoardService.listArticle(map);
+			int totalPage = tripBoardService.getTotalArticleCount(map);
+			Map<String,Object> res = new HashMap();
 			if (list != null & !list.isEmpty()) {
-				return new ResponseEntity<List<TripBoardDto>>(list, HttpStatus.OK);
+				res.put("list", list);
+				res.put("totalPage", totalPage);
+				return new ResponseEntity<>(res, HttpStatus.OK);
+//				return new ResponseEntity<List<TripBoardDto>>(list, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
@@ -93,7 +98,7 @@ public class TripBoardController {
 	
 	@PutMapping("/modify")
 	public ResponseEntity<?> modifyArticle(@RequestBody TripBoardDto board) {
-		
+		logger.info("modifyArticle board - {}", board);
 		Map<String,Object> map = new HashMap();
 		try {
 			tripBoardService.modifyArticle(board);

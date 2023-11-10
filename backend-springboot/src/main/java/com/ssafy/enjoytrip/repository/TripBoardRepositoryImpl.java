@@ -32,7 +32,7 @@ public class TripBoardRepositoryImpl implements TripBoardRepository{
 	}
 
 	@Override
-	public int getTotalArticleCount(Map<String, Object> param) throws Exception {
+	public int getTotalArticleCount(Map<String, String> param) throws Exception {
 		return session.selectOne(NAMESPACE + "getTotalArticleCount", param);
 	}
 
