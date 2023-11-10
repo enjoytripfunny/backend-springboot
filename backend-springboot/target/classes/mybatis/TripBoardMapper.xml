@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.ssafy.enjoytrip.repository.TripBoardRepository">
+
+	<resultMap type="tripDto" id="trip">
+		<result column="article_no" property="articleNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="register_time" property="registerTime"/>
+	</resultMap>
+
+	<!-- 게시물 등록 -->
+	<insert id = "writeArticle" parameterType="tripDto">
+		insert into board (user_id, subject, content, hit, register_time)
+		values (#{userId}, #{subject}, #{content}, 0, now())
+	</insert>
+	
+	<!-- 검색 sql -->
+<!-- 	<sql id="search">
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				and subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				and ${key} = #{word}
+			</if>
+		</if>
+	</sql> -->
+	
+	<!-- 게시물 목록 -->
+	<select id = "listArticle" parameterType="map" resultMap="trip">
+		select article_no, user_id, subject, content, hit, register_time
+		from board
+		<where>
+			<if test="word != null and word != ''">
+				<if test="key == 'subject'">
+					and subject like concat('%', #{word}, '%')
+				</if>
+				<if test="key != 'subject'">
+					and ${key} = #{word}
+				</if>
+			</if>
+		</where>
+		order by article_no desc
+		limit #{start}, #{listsize}
+	</select>
+	
+	<!-- 게시물 한개 가져오기 -->
+	<select id = "getArticle" parameterType="int" resultMap="trip">
+		select article_no, user_id, subject, content, hit, register_time
+		from board
+		where article_no = #{articleNo}
+	</select>
+	
+	<!-- 게시물 총 개수 -->
+	<select id = "getTotalArticleCount" parameterType="map" resultType="int">
+		select count(*) 
+		from board;
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateHit" parameterType="int">
+		update board
+		set hit = hit + 1
+		where article_no = #{articleNo}
+	</update>
+	
+	<!-- 게시물 수정 -->
+	<update id="modifyArticle" parameterType="tripDto">
+		update board
+		set subject = #{subject}, content = #{content}
+		where article_no = #{articleNo}
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="deleteArticle" parameterType="int">
+		delete from board
+		where article_no = #{articleNo}
+	</delete>
+
+</mapper>
