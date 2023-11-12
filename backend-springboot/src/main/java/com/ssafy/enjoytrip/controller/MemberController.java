@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/member")
@@ -34,6 +36,25 @@ public class MemberController {
             return new ResponseEntity<>(returnDto, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(memberDto, HttpStatus.CONFLICT);
+        }
+    }
+
+    public Boolean idCheck(String userId) throws Exception{
+        // userId와 일치하는 계정이 1개 이상이면, true, else false.
+        return service.idCheck(userId) > 0 ? true : false;
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody MemberDto memberDto) throws Exception {
+        Map<String, String> map = new HashMap<>();
+
+        if (idCheck(memberDto.getUserId())) {
+            map.put("msg", "false");
+            return new ResponseEntity<>(map, HttpStatus.CONFLICT);
+        } else {
+            service.signup(memberDto);
+            map.put("msg", "true");
+            return new ResponseEntity<>(map, HttpStatus.CREATED);
         }
     }
 }

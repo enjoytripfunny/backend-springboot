@@ -17,4 +17,13 @@ public class MemberRepositoryImpl implements MemberRepository {
         System.out.println("repo >>" + memberDto);
         return session.selectOne(NAMESPACE+"login", memberDto);
     }
+    @Override
+    public int idCheck(String userId) throws Exception {
+        return session.selectOne(NAMESPACE+"idCheck", userId);
+    }
+
+    @Override
+    public void signup(MemberDto memberDto) throws Exception {
+        session.insert(NAMESPACE+"signup", memberDto);
+    }
 }

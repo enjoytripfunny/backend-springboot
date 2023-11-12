@@ -22,4 +22,17 @@
         from members
         where user_id = #{userId} and user_password = #{userPassword}
     </select>
+
+    <!-- id exist check -->
+    <select id="idCheck" parameterType="String" resultType="int">
+        select count(*)
+        from members
+        where user_id = #{userId};
+    </select>
+    
+    <!-- signup -->
+    <insert id="signup" parameterType="memberDto">
+        insert into members (user_id, user_name, user_password, email_id, email_domain, join_date)
+        values (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, now())
+    </insert>
 </mapper>

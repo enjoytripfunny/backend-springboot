@@ -6,9 +6,11 @@
 
   <typeAliases>
   	 <typeAlias type="com.ssafy.enjoytrip.dto.TripBoardDto" alias="tripDto"/>
+     <typeAlias type="com.ssafy.enjoytrip.dto.MemberDto" alias="memberDto"/>
   </typeAliases>
 
   <mappers>
     <mapper resource="mybatis/TripBoardMapper.xml"/>
+    <mapper resource="mybatis/MemberMapper.xml" />
   </mappers>
 </configuration>
