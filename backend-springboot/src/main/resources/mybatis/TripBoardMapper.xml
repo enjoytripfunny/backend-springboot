@@ -22,22 +22,22 @@
 	</insert>
 	
 	<!-- 검색 sql -->
-<!-- 	<sql id="search">
+	<sql id="search">
 		<if test="word != null and word != ''">
 			<if test="key == 'subject'">
-				and subject like concat('%', #{word}, '%')
+				where subject like concat('%', #{word}, '%')
 			</if>
 			<if test="key != 'subject'">
-				and ${key} = #{word}
+				where ${key} = #{word}
 			</if>
 		</if>
-	</sql> -->
+	</sql>
 	
 	<!-- 게시물 목록 -->
 	<select id = "listArticle" parameterType="map" resultMap="trip">
 		select article_no, user_id, subject, content, hit, register_time
 		from board
-		<where>
+<!-- 		<where>
 			<if test="word != null and word != ''">
 				<if test="key == 'subject'">
 					and subject like concat('%', #{word}, '%')
@@ -46,7 +46,8 @@
 					and ${key} = #{word}
 				</if>
 			</if>
-		</where>
+		</where> -->
+		<include refid="search"></include>
 		order by article_no desc
 		limit #{start}, #{listsize}
 	</select>
@@ -60,8 +61,9 @@
 	
 	<!-- 게시물 총 개수 -->
 	<select id = "getTotalArticleCount" parameterType="map" resultType="int">
-		select count(*) 
-		from board;
+		select count(*)
+		from board
+		<include refid="search"></include>
 	</select>
 	
 	<!-- 조회수 증가 -->

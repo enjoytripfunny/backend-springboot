@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.dto.TripBoardDto;
 import com.ssafy.enjoytrip.repository.TripBoardRepository;
-import com.ssafy.util.PageNavigation;
 import com.ssafy.util.SizeConstant;
 
 @Service("TripBoardServiceImpl")

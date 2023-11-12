@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.dto.TripBoardDto;
 import com.ssafy.enjoytrip.service.TripBoardServcie;
+import com.ssafy.util.SizeConstant;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +47,7 @@ public class TripBoardController {
 //		return new ResponseEntity<Void>(HttpStatus.CREATED);
 //	}
 	public ResponseEntity<?> writeArticle(@RequestBody TripBoardDto board) {
-		logger.info("writeArticle TripBoardDto - {}", board);
+		logger.debug("writeArticle TripBoardDto - {}", board);
 		Map<String,Object> map = new HashMap();
 		try {
 			tripBoardService.writeArticle(board);
@@ -59,9 +60,11 @@ public class TripBoardController {
 	
 	@GetMapping("/list")
 	public ResponseEntity<?> listArticle(@RequestParam Map<String, String> map) {
+		logger.debug("list param: ", map);
 		try {
 			List<TripBoardDto> list = tripBoardService.listArticle(map);
-			int totalPage = tripBoardService.getTotalArticleCount(map);
+			int totalPage = (tripBoardService.getTotalArticleCount(map) - 1) / SizeConstant.LIST_SIZE + 1;
+			logger.debug("list totalPage: ", totalPage);
 			Map<String,Object> res = new HashMap();
 			if (list != null & !list.isEmpty()) {
 				res.put("list", list);
@@ -80,7 +83,7 @@ public class TripBoardController {
 	
 	@GetMapping("/view/{articleno}")
 	public ResponseEntity<?> getArticle(@PathVariable("articleno") int articleNo, @RequestParam Map<String, String> map) {
-		logger.info("getArticle articleNo - {}", articleNo);
+		logger.debug("getArticle articleNo - {}", articleNo);
 		try {
 			TripBoardDto boardDto = tripBoardService.getArticle(articleNo);
 			tripBoardService.updateHit(articleNo);
@@ -98,7 +101,7 @@ public class TripBoardController {
 	
 	@PutMapping("/modify")
 	public ResponseEntity<?> modifyArticle(@RequestBody TripBoardDto board) {
-		logger.info("modifyArticle board - {}", board);
+		logger.debug("modifyArticle board - {}", board);
 		Map<String,Object> map = new HashMap();
 		try {
 			tripBoardService.modifyArticle(board);
