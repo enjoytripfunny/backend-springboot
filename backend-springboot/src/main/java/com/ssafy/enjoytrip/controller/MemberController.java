@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/member")
@@ -35,5 +37,15 @@ public class MemberController {
         } catch (Exception e) {
             return new ResponseEntity<>(memberDto, HttpStatus.CONFLICT);
         }
+    }
+
+    @PostMapping("modify")
+    public ResponseEntity<?> modify(@RequestBody MemberDto memberDto) throws Exception {
+
+        Map<String, String> map = new HashMap<>();
+        service.memberModify(memberDto);
+        map.put("msg", "success");
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

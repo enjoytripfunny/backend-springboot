@@ -21,4 +21,11 @@ public class MemberServiceImpl implements MemberService {
         System.out.println("test >>" + test);
         return test;
     }
+
+    @Override
+    public void memberModify(MemberDto memberDto) throws Exception {
+        session.getMapper(MemberRepository.class).memberModify(memberDto);
+    }
+
+
 }

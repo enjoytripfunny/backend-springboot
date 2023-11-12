@@ -17,4 +17,9 @@ public class MemberRepositoryImpl implements MemberRepository {
         System.out.println("repo >>" + memberDto);
         return session.selectOne(NAMESPACE+"login", memberDto);
     }
+
+    @Override
+    public void memberModify(MemberDto memberDto) throws Exception {
+        session.update(NAMESPACE+"memberModify", memberDto);
+    }
 }

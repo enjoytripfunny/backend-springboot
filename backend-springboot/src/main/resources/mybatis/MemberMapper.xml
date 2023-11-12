@@ -22,4 +22,13 @@
         from members
         where user_id = #{userId} and user_password = #{userPassword}
     </select>
+
+    <!-- modify -->
+    <update id="memberModify" parameterType="memberDto">
+        update members
+        set user_name = #{userName}, user_password = #{userPassword}, email_id = #{emailId}, email_domain = #{emailDomain}
+        where user_id = #{userId}
+    </update>
+
+
 </mapper>
