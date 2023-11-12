@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/member")
@@ -35,5 +38,18 @@ public class MemberController {
         } catch (Exception e) {
             return new ResponseEntity<>(memberDto, HttpStatus.CONFLICT);
         }
+    }
+
+    @GetMapping("/delete")
+    public ResponseEntity<?> delete(@RequestBody String userId) throws Exception {
+        service.memberDelete(userId);
+        Map<String, String> map = new HashMap<>();
+        // id check
+        if (true) {
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "fail");
+        }
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

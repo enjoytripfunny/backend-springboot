@@ -17,4 +17,9 @@ public class MemberRepositoryImpl implements MemberRepository {
         System.out.println("repo >>" + memberDto);
         return session.selectOne(NAMESPACE+"login", memberDto);
     }
+
+    @Override
+    public void memberDelete(String userId) throws Exception {
+        session.delete(NAMESPACE+"memberDelete", userId);
+    }
 }

@@ -21,4 +21,9 @@ public class MemberServiceImpl implements MemberService {
         System.out.println("test >>" + test);
         return test;
     }
+
+    @Override
+    public void memberDelete(String userId) throws Exception {
+        session.getMapper(MemberRepository.class).memberDelete(userId);
+    }
 }

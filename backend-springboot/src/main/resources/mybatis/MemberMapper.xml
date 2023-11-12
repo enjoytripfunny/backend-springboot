@@ -22,4 +22,10 @@
         from members
         where user_id = #{userId} and user_password = #{userPassword}
     </select>
+
+    <!-- delete -->
+    <delete id="memberDelete" parameterType="String">
+        delete from members
+        where user_id = #{userId}
+    </delete>
 </mapper>
