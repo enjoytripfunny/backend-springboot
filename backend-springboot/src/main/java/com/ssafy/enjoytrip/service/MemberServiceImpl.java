@@ -31,4 +31,11 @@ public class MemberServiceImpl implements MemberService {
     public void signup(MemberDto memberDto) throws Exception {
         session.getMapper(MemberRepository.class).signup(memberDto);
     }
+
+    @Override
+    public void memberModify(MemberDto memberDto) throws Exception {
+        session.getMapper(MemberRepository.class).memberModify(memberDto);
+    }
+
+
 }

@@ -35,4 +35,11 @@
         insert into members (user_id, user_name, user_password, email_id, email_domain, join_date)
         values (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, now())
     </insert>
+
+    <!-- modify -->
+    <update id="memberModify" parameterType="memberDto">
+        update members
+        set user_name = #{userName}, user_password = #{userPassword}, email_id = #{emailId}, email_domain = #{emailDomain}
+        where user_id = #{userId}
+    </update>
 </mapper>

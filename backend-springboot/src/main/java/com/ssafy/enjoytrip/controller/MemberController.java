@@ -57,4 +57,14 @@ public class MemberController {
             return new ResponseEntity<>(map, HttpStatus.CREATED);
         }
     }
+
+    @PostMapping("modify")
+    public ResponseEntity<?> modify(@RequestBody MemberDto memberDto) throws Exception {
+
+        Map<String, String> map = new HashMap<>();
+        service.memberModify(memberDto);
+        map.put("msg", "success");
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

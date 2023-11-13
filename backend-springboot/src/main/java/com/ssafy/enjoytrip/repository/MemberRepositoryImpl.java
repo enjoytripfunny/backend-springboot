@@ -26,4 +26,9 @@ public class MemberRepositoryImpl implements MemberRepository {
     public void signup(MemberDto memberDto) throws Exception {
         session.insert(NAMESPACE+"signup", memberDto);
     }
+
+    @Override
+    public void memberModify(MemberDto memberDto) throws Exception {
+        session.update(NAMESPACE+"memberModify", memberDto);
+    }
 }
