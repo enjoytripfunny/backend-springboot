@@ -7,5 +7,5 @@ public interface MemberRepository {
     int idCheck(String userId) throws Exception;
     void signup(MemberDto memberDto) throws Exception;
     void memberModify(MemberDto memberDto) throws Exception;
-
+    void memberDelete(String userId) throws Exception;
 }

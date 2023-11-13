@@ -37,5 +37,8 @@ public class MemberServiceImpl implements MemberService {
         session.getMapper(MemberRepository.class).memberModify(memberDto);
     }
 
-
+    @Override
+    public void memberDelete(String userId) throws Exception {
+        session.getMapper(MemberRepository.class).memberDelete(userId);
+    }
 }

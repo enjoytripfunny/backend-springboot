@@ -67,4 +67,18 @@ public class MemberController {
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    @GetMapping("/delete")
+    public ResponseEntity<?> delete(@RequestBody String userId) throws Exception {
+
+        Map<String, String> map = new HashMap<>();
+        // id check
+        if (service.idCheck(userId) > 0) {
+            service.memberDelete(userId);
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "fail");
+        }
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

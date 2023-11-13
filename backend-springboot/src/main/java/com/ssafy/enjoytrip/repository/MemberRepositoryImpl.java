@@ -31,4 +31,9 @@ public class MemberRepositoryImpl implements MemberRepository {
     public void memberModify(MemberDto memberDto) throws Exception {
         session.update(NAMESPACE+"memberModify", memberDto);
     }
+
+    @Override
+    public void memberDelete(String userId) throws Exception {
+        session.delete(NAMESPACE+"memberDelete", userId);
+    }
 }
