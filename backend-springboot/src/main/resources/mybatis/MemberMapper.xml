@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 실행 안되면, 인텔리제이에서 제공하는 초기 세팅으로 실행해봐 -->
+
+<mapper namespace="com.ssafy.enjoytrip.repository.MemberRepository">
+
+    <resultMap type="memberDto" id="memberDto">
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="user_password" property="userPassword" />
+        <result column="email_id" property="emailId" />
+        <result column="email_domain" property="emailDomain" />
+    </resultMap>
+
+    <!-- login -->
+    <!-- parameterType을 parameterMap으로 설정해서 에러남 .... -->
+    <!-- 왜... parameter는 Type이고... result는 Map이야... -->
+    <select id="login" parameterType="memberDto" resultMap="memberDto">
+        select user_id, user_name, user_password, email_id, email_domain
+        from members
+        where user_id = #{userId} and user_password = #{userPassword}
+    </select>
+
+    <!-- id exist check -->
+    <select id="idCheck" parameterType="String" resultType="int">
+        select count(*)
+        from members
+        where user_id = #{userId};
+    </select>
+
+    <!-- signup -->
+    <insert id="signup" parameterType="memberDto">
+        insert into members (user_id, user_name, user_password, email_id, email_domain, join_date)
+        values (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, now())
+    </insert>
+
+    <!-- modify -->
+    <update id="memberModify" parameterType="memberDto">
+        update members
+        set user_name = #{userName}, user_password = #{userPassword}, email_id = #{emailId}, email_domain = #{emailDomain}
+        where user_id = #{userId}
+    </update>
+
+    <!-- delete -->
+    <delete id="memberDelete" parameterType="String">
+        delete from members
+        where user_id = #{userId}
+    </delete>
+</mapper>
