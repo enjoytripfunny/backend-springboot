@@ -21,4 +21,14 @@ public class MemberServiceImpl implements MemberService {
         System.out.println("test >>" + test);
         return test;
     }
+
+    @Override
+    public int idCheck(String userId) throws Exception {
+        return session.getMapper(MemberRepository.class).idCheck(userId);
+    }
+
+    @Override
+    public void signup(MemberDto memberDto) throws Exception {
+        session.getMapper(MemberRepository.class).signup(memberDto);
+    }
 }
