@@ -41,8 +41,9 @@
 	<insert id="registerResto" parameterType="restoDto">
 		insert into restaurant (resto_api_id, resto_name, resto_phone, category, address, latitude, longitude)
 		values (#{restoApiId}, #{restoName},#{restoPhone},#{category},#{address},#{latitude},#{longitude})
+		ON DUPLICATE KEY UPDATE save_count = save_count + 1;
 	</insert>
-	
+
 	<!-- 맛집 여러개 등록(restaurant 테이블에 존재하지 않을 경우) -->
 	<insert id="registerRestos" parameterType="restoDto">
 		insert into restaurant (resto_api_id, resto_name, resto_phone, category, address, latitude, longitude)
@@ -85,7 +86,7 @@
 	</select>
 	
 	<!-- 맛집 저장 개수 +1 -->
-		<update id="updateSaveCount" parameterType="string">
+	<update id="updateSaveCount" parameterType="string">
 		update restaurant
 		set save_count = save_count + 1
 		where resto_api_id = #{restoApiId}

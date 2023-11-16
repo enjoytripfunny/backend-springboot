@@ -40,6 +40,12 @@ public class MapRestoServiceImpl implements MapRestoService {
 	public void makeMapResto(MapRestoDto mapResto) throws Exception {
 		// 맛지도 만들기
 		session.getMapper(MapRestoRepository.class).makeMapResto(mapResto);
+		// 파일 등록
+		session.getMapper(MapRestoRepository.class).registerFile(mapResto);
+		// 맛집 등록
+		session.getMapper(MapRestoRepository.class).registerRestos(mapResto);
+		// 맛지도에 등록할 맛집 등록
+		session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);
 //		List<String> existResto = new ArrayList<>();
 //		List<RestoDto> newResto = new ArrayList<RestoDto>();
 //		for (RestoDto restoDto : mapResto.getRestos()) {
