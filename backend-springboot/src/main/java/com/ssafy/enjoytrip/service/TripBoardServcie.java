@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.enjoytrip.dto.TripBoardDto;
-import com.ssafy.util.PageNavigation;
 
 public interface TripBoardServcie {
 	void writeArticle(TripBoardDto tripDto) throws Exception;

@@ -69,7 +69,7 @@ public class MemberController {
     }
 
     @GetMapping("/delete")
-    public ResponseEntity<?> delete(@RequestBody String userId) throws Exception {
+    public ResponseEntity<?> delete(@RequestParam String userId) throws Exception {
 
         Map<String, String> map = new HashMap<>();
         // id check
