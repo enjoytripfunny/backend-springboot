@@ -99,5 +99,12 @@
 			(#{mapRestoNo}, #{tag})
 		</foreach>
 	</insert>
+	
+	<!-- 맛지도리스트 가져오기 -->
+	<select id="getMapRestosList" parameterType="map" resultMap="mapRestoDto">
+		select map_resto_no_pk, user_id_fk, subject, content, register_time 
+		from map_restaurant
+		limit #{start}, #{listsize}
+	</select>
 
 </mapper>

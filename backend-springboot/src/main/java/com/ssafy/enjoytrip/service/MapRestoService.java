@@ -1,5 +1,9 @@
 package com.ssafy.enjoytrip.service;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 
 /*
@@ -13,5 +17,5 @@ import com.ssafy.enjoytrip.dto.MapRestoDto;
  */
 public interface MapRestoService {
 	void makeMapResto(MapRestoDto mapResto) throws Exception;
-	
+	List<MapRestoDto> getMapRestosList(int num) throws Exception;
 }

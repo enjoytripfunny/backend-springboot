@@ -1,5 +1,8 @@
 package com.ssafy.enjoytrip.repository;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,6 +49,11 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	@Override
 	public void registerUserResto(MapRestoDto mapResto) throws Exception {
 		session.insert(NAMESPACE + "registerUserResto", mapResto);
+	}
+
+	@Override
+	public List<MapRestoDto> getMapRestosList(Map<String, String> param) throws Exception {
+		return session.selectList(NAMESPACE + "getMapRestosList", param);
 	}
 
 }

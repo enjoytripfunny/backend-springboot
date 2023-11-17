@@ -1,9 +1,14 @@
 package com.ssafy.enjoytrip.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.repository.MapRestoRepository;
@@ -52,6 +57,14 @@ public class MapRestoServiceImpl implements MapRestoService {
 //				session.getMapper(MapRestoRepository.class).registerRestos(mapResto);
 //			}
 //		}
+	}
+
+	@Override
+	public List<MapRestoDto> getMapRestosList(int num) throws Exception {
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("start", num + "");
+		param.put("listsize", (num * 12) + "");
+		return session.getMapper(MapRestoRepository.class).getMapRestosList(param);
 	}
 
 }
