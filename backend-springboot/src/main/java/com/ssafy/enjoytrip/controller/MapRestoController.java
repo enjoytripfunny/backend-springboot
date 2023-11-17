@@ -100,8 +100,10 @@ public class MapRestoController {
 		}
 	}
 	
-	@GetMapping("test")
-	public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num) {
+//	@RequestParam("num") int num
+	@GetMapping
+	public ResponseEntity<?> listMapRestaurant() {
+		int num = 1;
 		log.debug("MapRestoController listMapRestaurant map: ", num);
 		System.out.println("list test: " + num);
 		try {
