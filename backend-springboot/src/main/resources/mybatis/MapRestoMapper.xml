@@ -8,8 +8,8 @@
 
 	<!-- 맛지도 매핑 -->
 	<resultMap type="mapRestoDto" id="mapResto">
-		<result column="map_resto_no" property="mapRestoNo"/>
-		<result column="user_id" property="userId"/>
+		<result column="map_resto_no_pk" property="mapRestoNo"/>
+		<result column="user_id_fk" property="userId"/>
 		<result column="subject" property="subject"/>
 		<result column="content" property="content"/>
 		<result column="register_time" property="registerTime"/>
@@ -101,7 +101,7 @@
 	</insert>
 	
 	<!-- 맛지도리스트 가져오기 -->
-	<select id="getMapRestosList" parameterType="map" resultMap="mapRestoDto">
+	<select id="getMapRestosList" parameterType="map" resultMap="mapResto">
 		select map_resto_no_pk, user_id_fk, subject, content, register_time 
 		from map_restaurant
 		limit #{start}, #{listsize}

@@ -61,9 +61,10 @@ public class MapRestoServiceImpl implements MapRestoService {
 
 	@Override
 	public List<MapRestoDto> getMapRestosList(int num) throws Exception {
-		Map<String, String> param = new HashMap<String, String>();
-		param.put("start", num + "");
-		param.put("listsize", (num * 12) + "");
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("start", num );
+		param.put("listsize", num * 12);
+		System.out.println("service map: " + param);
 		return session.getMapper(MapRestoRepository.class).getMapRestosList(param);
 	}
 

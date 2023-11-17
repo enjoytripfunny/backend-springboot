@@ -12,5 +12,5 @@ public interface MapRestoRepository {
 	void registerRestos(MapRestoDto mapResto) throws Exception;
 	void registerFile(MapRestoDto mapResto) throws Exception;
 	void registerUserResto(MapRestoDto mapResto) throws Exception;
-	List<MapRestoDto> getMapRestosList(Map<String, String> param) throws Exception;
+	List<MapRestoDto> getMapRestosList(Map<String, Object> param) throws Exception;
 }

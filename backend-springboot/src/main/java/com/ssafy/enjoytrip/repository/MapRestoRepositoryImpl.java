@@ -52,7 +52,7 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	}
 
 	@Override
-	public List<MapRestoDto> getMapRestosList(Map<String, String> param) throws Exception {
+	public List<MapRestoDto> getMapRestosList(Map<String, Object> param) throws Exception {
 		return session.selectList(NAMESPACE + "getMapRestosList", param);
 	}
 

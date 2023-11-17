@@ -100,9 +100,10 @@ public class MapRestoController {
 		}
 	}
 	
-	@GetMapping
+	@GetMapping("test")
 	public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num) {
 		log.debug("MapRestoController listMapRestaurant map: ", num);
+		System.out.println("list test: " + num);
 		try {
 			List<MapRestoDto> mapRestosList = mapRestoService.getMapRestosList(num);
 			HttpHeaders header = new HttpHeaders();
