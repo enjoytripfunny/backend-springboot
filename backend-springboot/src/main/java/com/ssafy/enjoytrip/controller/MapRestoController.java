@@ -100,8 +100,11 @@ public class MapRestoController {
 		}
 	}
 	
-	@GetMapping
-	public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num) {
+	@GetMapping("/test")
+	public ResponseEntity<?> listMapRestaurant(@RequestParam Map<String, String> map) {
+//		public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num) {
+		System.out.println("listMapRestaurant 여기 오나아아아? map: " + map);
+		int num = Integer.parseInt(map.get("num"));
 		log.debug("MapRestoController listMapRestaurant map: ", num);
 		try {
 			List<MapRestoDto> mapRestosList = mapRestoService.getMapRestosList(num);
