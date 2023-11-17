@@ -17,5 +17,6 @@ public class MapRestoDto {
 	private String content; //맛지도 간단 설명
 	private FileInfoDto fileInfo; //맛지도 썸네일
 	private List<RestoDto> restos; //맛지도안에 맛집들의 api 아이디
+	private List<String> tags; //맛지도에 대한 태그
 	private String registerTime; //맛지도 만들어진 날짜
 }

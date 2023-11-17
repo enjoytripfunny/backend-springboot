@@ -1,15 +1,11 @@
 package com.ssafy.enjoytrip.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrip.dto.MapRestoDto;
-import com.ssafy.enjoytrip.dto.RestoDto;
 import com.ssafy.enjoytrip.repository.MapRestoRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +36,12 @@ public class MapRestoServiceImpl implements MapRestoService {
 	public void makeMapResto(MapRestoDto mapResto) throws Exception {
 		// 맛지도 만들기
 		session.getMapper(MapRestoRepository.class).makeMapResto(mapResto);
+		// 파일 등록
+		session.getMapper(MapRestoRepository.class).registerFile(mapResto);
+		// 맛집 등록
+		session.getMapper(MapRestoRepository.class).registerRestos(mapResto);
+		// 맛지도에 등록할 맛집 등록
+		session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);
 //		List<String> existResto = new ArrayList<>();
 //		List<RestoDto> newResto = new ArrayList<RestoDto>();
 //		for (RestoDto restoDto : mapResto.getRestos()) {
