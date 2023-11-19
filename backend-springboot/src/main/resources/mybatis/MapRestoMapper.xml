@@ -15,6 +15,15 @@
 		<result column="register_time" property="registerTime"/>
 	</resultMap>
 	
+	<!-- 맛지도 목록 매핑 -->
+	<resultMap type="mapRestoLikeDto" id="mapRestoLike">
+		<result column="map_resto_no_pk" property="mapRestoNo"/>
+		<result column="user_id_fk" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="like_value" property="likeValue"/>
+		<result column="register_time" property="registerTime"/>
+	</resultMap>
+	
 	<!-- 맛집 매핑 -->
 	<resultMap type="restoDto" id="resto">
 		<!-- <result column="resto_no" property="restoNo"/> -->
@@ -30,6 +39,26 @@
 		<result column="save_count" property="saveCount"/>
 	</resultMap> 
 	
+	<resultMap type="mapRestoDto" id="mapRestoFile">
+		<result column="map_resto_no_pk" property="mapRestoNo"/>
+		<result column="user_id_fk" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="register_time" property="registerTime"/>
+	  	<collection property="fileInfo" ofType="FileInfoDto">
+    		<id property="mapRestoNo" column="mapRestoNo"/>
+    		<result property="saveFolder" column="fileInfo_saveFolder"/>
+    		<result property="originalFile" column="fileInfo_originalFile"/>
+    		<result property="saveFile" column="fileInfo_saveFile"/>
+  		</collection>
+	</resultMap>
+	
+	
+<!-- 	
+	<resultMap type="mapRestoDto" id="viewMapResto" extends="mapResto">
+		<collection property="fileInfo" column="map_resto_no_pk" javaType="fileInfoDto"select="getFileInfo"/>
+	</resultMap> -->
+	
 	<!-- 파일 매핑 -->
 	<resultMap type="fileInfoDto" id="file">
 		<result column="save_folder" property="saveFolder"/>
@@ -37,15 +66,15 @@
 		<result column="save_file" property="saveFile"/>
 	</resultMap>
 
-	<!-- 맛집 한개 등록(restaurant 테이블에 존재하지 않을 경우) -->
+	<!-- 맛집 한개 등록 -->
 	<insert id="registerResto" parameterType="restoDto">
 		insert into restaurant (resto_api_id, resto_name, resto_phone, category, address, latitude, longitude)
 		values (#{restoApiId}, #{restoName},#{restoPhone},#{category},#{address},#{latitude},#{longitude})
 		ON DUPLICATE KEY UPDATE save_count = save_count + 1;
 	</insert>
 
-	<!-- 맛집 여러개 등록(restaurant 테이블에 존재하지 않을 경우) -->
-	<insert id="registerRestos" parameterType="restoDto">
+	<!-- 맛집 여러개 등록 -->
+	<insert id="registerRestos" parameterType="mapRestoDto">
 		insert into restaurant (resto_api_id, resto_name, resto_phone, category, address, latitude, longitude)
 		<foreach collection="restos" item="resto" separator=" , ">
 			values (#{resto.restoApiId}, #{resto.restoName},#{resto.restoPhone},#{resto.category},#{resto.address},#{resto.latitude},#{resto.longitude})
@@ -65,6 +94,13 @@
 	<insert id="registerFile" parameterType="mapRestoDto">
 		insert into file_info (map_resto_no_fk, save_folder, original_file, save_file)
 		values (#{mapRestoNo}, #{saveFolder}, #{originalFile}, #{saveFile})
+<!-- 		<foreach collection="fileInfos" item="fileinfo" separator=" , ">
+			(#{articleNo}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})
+		</foreach> -->
+	</insert>
+	<insert id="registerFileTest" parameterType="FileInfoDto">
+		insert into file_info (map_resto_no_fk, save_folder, original_file, save_file)
+		values (13, #{saveFolder}, #{originalFile}, #{saveFile})
 <!-- 		<foreach collection="fileInfos" item="fileinfo" separator=" , ">
 			(#{articleNo}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})
 		</foreach> -->
@@ -105,6 +141,70 @@
 		select map_resto_no_pk, user_id_fk, subject, content, register_time 
 		from map_restaurant
 		limit #{start}, #{listsize}
+	</select>
+	
+	<!-- 맛지도 리스트와 좋아요까지 가져오기 -->
+	<select id="getMapRestosLikeList" parameterType="map" resultMap="mapRestoLike">
+<!-- 		select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time, li.like_value
+		from map_restaurant mr
+		left join like_info li
+		on mr.map_resto_no_pk = li.map_resto_no_fk
+		limit #{start}, #{listsize} -->
+		select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time,
+		(select like_value from like_info where user_id_fk = #{userId} and mr.map_resto_no_pk = map_resto_no_fk) as like_value
+		from map_restaurant mr
+		limit #{start}, #{listsize}
+	</select>
+	
+	<select id="getFileInfo" parameterType="string" resultMap="file">
+		select save_folder, original_file, save_file
+		from file_info
+		where map_resto_no_fk = #{mapRestoNo}
+	</select>
+	
+	<select parameterType="map" id="getMapRestoFileList" resultMap="mapRestoFile">
+	SELECT
+    mr.map_resto_no_pk AS mapRestoNo,
+    mr.user_id_fk AS userId,
+    mr.subject AS subject,
+    mr.content AS content,
+    mr.register_time AS registerTime,
+    (SELECT save_folder, original_file, save_file
+     FROM file_info fi
+     WHERE fi.map_resto_no_fk = mr.map_resto_no_pk) AS fileInfo
+	FROM map_resto mr
+	limit #{start}, #{listsize}
+	</select>
+	
+	<!-- 좋아요 누르기 -->
+	<!-- 좋아요 테이블에 값 추가 -->
+	<insert id="registerLike" parameterType="restoDto">
+		insert into like_info (user_id_fk, map_resto_no_fk, like_value)
+		values (#{userId}, #{mapRestoNo},#{likeValue})
+		ON DUPLICATE KEY UPDATE like_value = #{likeValue}
+	</insert>
+	<!-- 게시물의 좋아요 수 변경 -->
+	
+	<!-- 내가 작성한 맛지도 가져오기 -->
+	<select id = "myMapResto" parameterType = "string">
+	
+	select map_resto_no_pk, user_id_fk, subject, register_time
+	from map_restaurant
+	where user_id_fk = #{userId};
+	</select>
+	
+	<!-- 내가 좋아요 누른 맛지도 가져오기 -->
+	<select id = "likeMapResto" parameterType = "string">
+	select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time
+	from map_restaurant mr
+	join like_info li on mr.map_resto_no_pk = li.map_resto_no_fk
+	where li.user_id_fk = #{userId} and li.like_value = 1;
+	</select>
+	<!-- 맛지도 상세 보기 -->
+	<select id = "getDetailMapResto" parameterType = "string" resultMap = "mapResto">
+	select map_resto_no_pk, user_id_fk, subject, content,register_time
+	from map_restaurant
+	where map_resto_no_pk = #{mapRestoNo};	
 	</select>
 
 </mapper>

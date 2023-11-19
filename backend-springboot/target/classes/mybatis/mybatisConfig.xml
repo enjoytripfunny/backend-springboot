@@ -10,6 +10,8 @@
      <typeAlias type="com.ssafy.enjoytrip.dto.MapRestoDto" alias="mapRestoDto"/>
      <typeAlias type="com.ssafy.enjoytrip.dto.RestoDto" alias="restoDto"/>
      <typeAlias type="com.ssafy.enjoytrip.dto.FileInfoDto" alias="fileInfoDto"/>
+     <typeAlias type="com.ssafy.enjoytrip.dto.MapRestoLikeDto" alias="mapRestoLikeDto"/>
+     
   </typeAliases>
 
   <mappers>

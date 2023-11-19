@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
+import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
 
 /*
  * 1. map_restaurant 테이블에  makeMapResto sql 써서 맛지도 등록
@@ -17,5 +19,7 @@ import com.ssafy.enjoytrip.dto.MapRestoDto;
  */
 public interface MapRestoService {
 	void makeMapResto(MapRestoDto mapResto) throws Exception;
-	List<MapRestoDto> getMapRestosList(int num) throws Exception;
+	List<MapRestoLikeDto> getMapRestosList(int num) throws Exception;
+//	List<MapRestoDto> getMapRestosList(int num) throws Exception;
+	void registerFileTest(FileInfoDto file) throws Exception;
 }

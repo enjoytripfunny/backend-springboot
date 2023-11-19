@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
+import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.RestoDto;
 import com.ssafy.enjoytrip.repository.MapRestoRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +47,10 @@ public class MapRestoServiceImpl implements MapRestoService {
 		// 파일 등록
 		session.getMapper(MapRestoRepository.class).registerFile(mapResto);
 		// 맛집 등록
-		session.getMapper(MapRestoRepository.class).registerRestos(mapResto);
+		for (RestoDto resto : mapResto.getRestos()) {
+			session.getMapper(MapRestoRepository.class).registerResto(resto);		
+		}
+//		session.getMapper(MapRestoRepository.class).registerRestos(resto);
 		// 맛지도에 등록할 맛집 등록
 		session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);
 //		List<String> existResto = new ArrayList<>();
@@ -60,12 +66,22 @@ public class MapRestoServiceImpl implements MapRestoService {
 	}
 
 	@Override
-	public List<MapRestoDto> getMapRestosList(int num) throws Exception {
+	public List<MapRestoLikeDto> getMapRestosList(int num) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("start", num );
 		param.put("listsize", num * 12);
+		param.put("userId", "ssafy");
 		System.out.println("service map: " + param);
-		return session.getMapper(MapRestoRepository.class).getMapRestosList(param);
+		List<MapRestoLikeDto> mapRestosList = session.getMapper(MapRestoRepository.class).getMapRestosList(param);
+		for (MapRestoLikeDto mapRestoDto : mapRestosList) {
+			mapRestoDto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoDto.getMapRestoNo()));
+		}
+		return mapRestosList;
+	}
+
+	@Override
+	public void registerFileTest(FileInfoDto file) throws Exception {
+		session.getMapper(MapRestoRepository.class).registerFileTest(file);
 	}
 
 }

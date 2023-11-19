@@ -7,7 +7,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
+import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.RestoDto;
 
 @Repository("MapRestoRepositoryImpl")
 public class MapRestoRepositoryImpl implements MapRestoRepository {
@@ -52,8 +55,25 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	}
 
 	@Override
-	public List<MapRestoDto> getMapRestosList(Map<String, Object> param) throws Exception {
-		return session.selectList(NAMESPACE + "getMapRestosList", param);
+	public List<MapRestoLikeDto> getMapRestosList(Map<String, Object> param) throws Exception {
+//		return session.selectList(NAMESPACE + "getMapRestoFileList", param);
+//		return session.selectList(NAMESPACE + "getMapRestosList", param);
+		return session.selectList(NAMESPACE + "getMapRestosLikeList", param);
+	}
+
+	@Override
+	public void registerFileTest(FileInfoDto file) throws Exception {
+		session.insert(NAMESPACE + "registerFileTest", file);
+	}
+
+	@Override
+	public FileInfoDto getFileInfo(String mapRestoNo) throws Exception {
+		return session.selectOne(NAMESPACE + "getFileInfo", mapRestoNo);
+	}
+
+	@Override
+	public void registerResto(RestoDto resto) throws Exception {
+		session.insert(NAMESPACE + "registerResto", resto);
 	}
 
 }

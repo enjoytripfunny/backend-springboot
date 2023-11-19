@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
+import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
 import com.ssafy.enjoytrip.service.MapRestoService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -56,10 +58,13 @@ public class MapRestoController {
 		this.mapRestoService = mapRestoService;
 	}
 	
-	@PostMapping
-	public ResponseEntity<?> makeMapRestaurant(@RequestParam("fileInfo") MultipartFile fileInfo, @RequestBody MapRestoDto mapResto) {
+//	@RequestParam("fileInfo") MultipartFile fileInfo, 
+	
+	@PostMapping("reg")
+	public ResponseEntity<?> makeMapRestaurant(@RequestParam("fileInfo") MultipartFile fileInfo, @RequestParam("content") MapRestoDto mapResto) {
 		log.debug("MapRestoController makeMapRestaurant mapResto: ", mapResto);
-		
+		System.out.println("makeMapRestaurant mapResto: "+ mapResto);
+//		MultipartFile fileInfo = (MultipartFile) mapResto.getFileInfo();
 		if (mapResto.getFileInfo() == null) {
 			String today = new SimpleDateFormat("yyMMdd").format(new Date());
 			String saveFolder = uploadPath + File.separator + today;
@@ -107,7 +112,9 @@ public class MapRestoController {
 		log.debug("MapRestoController listMapRestaurant map: ", num);
 		System.out.println("list test: " + num);
 		try {
-			List<MapRestoDto> mapRestosList = mapRestoService.getMapRestosList(num);
+//			List<MapRestoDto> mapRestosList = mapRestoService.getMapRestosList(num);
+			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(num);
+			System.out.println("mapRestosList: " + mapRestosList);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 			return ResponseEntity.ok().headers(header).body(mapRestosList);
@@ -122,7 +129,7 @@ public class MapRestoController {
 	}
 	
 	@PostMapping("/fileupload")
-	public ResponseEntity<?> fileUpload(@RequestParam("fileInfo") MultipartFile fileInfo) {
+	public ResponseEntity<?> fileUpload(@RequestParam("fileInfo") MultipartFile fileInfo) throws Exception {
 		Map<String,Object> map = new HashMap();
 		String today = new SimpleDateFormat("yyMMdd").format(new Date());
 		String saveFolder = uploadPath + File.separator + today;
@@ -152,6 +159,7 @@ public class MapRestoController {
 					e.printStackTrace();
 				}
 			}
+			mapRestoService.registerFileTest(fileInfoDto);
 //		}
 		return ResponseEntity.ok().body(map);
 	}
