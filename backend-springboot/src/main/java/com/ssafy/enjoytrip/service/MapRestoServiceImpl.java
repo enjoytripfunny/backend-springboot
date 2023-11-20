@@ -56,16 +56,7 @@ public class MapRestoServiceImpl implements MapRestoService {
 //		session.getMapper(MapRestoRepository.class).registerRestos(resto);
 		// 맛지도에 등록할 맛집 등록
 		session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);
-//		List<String> existResto = new ArrayList<>();
-//		List<RestoDto> newResto = new ArrayList<RestoDto>();
-//		for (RestoDto restoDto : mapResto.getRestos()) {
-//			String res = null;
-//			res = session.getMapper(MapRestoRepository.class).getResto(restoDto.getRestoApiId());
-//			log.debug("MapRestoService makeMapResto/getRestos res: ", res);
-//			if (res != null) {
-//				session.getMapper(MapRestoRepository.class).registerRestos(mapResto);
-//			}
-//		}
+		session.getMapper(MapRestoRepository.class).registerTags(mapResto);
 	}
 
 	@Override
@@ -121,6 +112,11 @@ public class MapRestoServiceImpl implements MapRestoService {
 			mapResto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapResto.getMapRestoNo()));
 		}
 		return likeMapRestoList;
+	}
+
+	@Override
+	public MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception {
+		return session.getMapper(MapRestoRepository.class).getDetailMapResto(mapRestoNo);
 	}
 
 }

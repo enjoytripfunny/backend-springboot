@@ -95,4 +95,14 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 		return session.selectList(NAMESPACE + "getLikeMapResto", userId);
 	}
 
+	@Override
+	public MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception {
+		return session.selectOne(NAMESPACE + "getDetailMapResto", mapRestoNo);
+	}
+
+	@Override
+	public void registerTags(MapRestoDto mapResto) throws Exception {
+		session.insert(NAMESPACE + "registerTags", mapResto);
+	}
+
 }

@@ -24,4 +24,6 @@ public interface MapRestoRepository {
 	int getTotalMapResto() throws Exception; // 맛지도 목록 개수
 	List<MapRestoMypageDto> getMyMapResto(String userId) throws Exception;
 	List<MapRestoMypageDto> getLikeMapResto(String userId) throws Exception;
+	MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception;
+	void registerTags(MapRestoDto mapResto) throws Exception;
 }

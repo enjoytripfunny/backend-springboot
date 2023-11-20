@@ -24,4 +24,5 @@ public interface MapRestoService {
 	int getTotalMapResto() throws Exception;
 	List<MapRestoMypageDto> getMyMapResto(String userId) throws Exception;
 	List<MapRestoMypageDto> getLikeMapResto(String userId) throws Exception;
+	MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception;
 }

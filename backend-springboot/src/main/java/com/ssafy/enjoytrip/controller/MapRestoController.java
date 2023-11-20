@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -186,10 +187,11 @@ public class MapRestoController {
 	
 	//내가 작성한 맛지도 가져오기
 	@GetMapping("/myMapResto")
-	public ResponseEntity<?> listMyMapRestaurant(@RequestParam("num") int num, @RequestParam String userId) {
+	public ResponseEntity<?> listMyMapRestaurant(@RequestParam String userId) {
 		try {
 			Map<String,Object> map = new HashMap();
 			List<MapRestoMypageDto> myMapResto = mapRestoService.getMyMapResto(userId);
+			System.out.println("myMapResto List: " + myMapResto);
 			map.put("myMapList", myMapResto);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -214,4 +216,18 @@ public class MapRestoController {
 		}
 	}
 	
+	// 
+	@GetMapping("/view/{mapRestoNo}")
+	public ResponseEntity<?> getDetailMapResto(@PathVariable("mapRestoNo") String mapRestoNo) {
+		try {
+			Map<String,Object> map = new HashMap();
+			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
+			map.put("mapResto", detailMapResto);
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(map);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
 }

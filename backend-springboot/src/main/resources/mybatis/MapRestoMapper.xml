@@ -61,6 +61,11 @@
   		</collection>
 	</resultMap>
 	
+	<resultMap type="tagDto" id="tags">
+		<result column="map_resto_no_pk" property="mapRestoNo"/>
+		<result column="tag" property="tag"/>
+	</resultMap>
+	
 	
 <!-- 	
 	<resultMap type="mapRestoDto" id="viewMapResto" extends="mapResto">
@@ -108,7 +113,7 @@
 	</insert>
 	<insert id="registerFileTest" parameterType="FileInfoDto">
 		insert into file_info (map_resto_no_fk, save_folder, original_file, save_file)
-		values (22, #{saveFolder}, #{originalFile}, #{saveFile})
+		values (18, #{saveFolder}, #{originalFile}, #{saveFile})
 <!-- 		<foreach collection="fileInfos" item="fileinfo" separator=" , ">
 			(#{articleNo}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})
 		</foreach> -->
@@ -199,7 +204,7 @@
 	
 	select map_resto_no_pk, user_id_fk, subject, register_time
 	from map_restaurant
-	where user_id_fk = #{userId};
+	where user_id_fk = #{userId}
 	</select>
 	
 	<!-- 내가 좋아요 누른 맛지도 가져오기 -->
@@ -207,20 +212,28 @@
 	select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time
 	from map_restaurant mr
 	join like_info li on mr.map_resto_no_pk = li.map_resto_no_fk
-	where li.user_id_fk = #{userId} and li.like_value = 1;
+	where li.user_id_fk = #{userId} and li.like_value = 1
 	</select>
 	
 	<!-- 맛지도 상세 보기 -->
 	<select id = "getDetailMapResto" parameterType = "string" resultMap = "mapResto">
 	select map_resto_no_pk, user_id_fk, subject, content,register_time
 	from map_restaurant
-	where map_resto_no_pk = #{mapRestoNo};	
+	where map_resto_no_pk = #{mapRestoNo}	
 	</select>
 	
 	<!-- 맛지도 총개수 가져오기 -->
 	<select id="getTotalMapResto" resultType="int">
 		select count(*) 
-		from map_restaurant;
+		from map_restaurant
 	</select>
+	
+	<!-- 태그 저장 -->
+	<insert id="registerTags" parameterType = "mapRestoDto">
+		insert into tags(map_resto_no_fk, tag) values
+		<foreach collection="tags" item="tag" separator=" , ">
+			(#{mapRestoNo}, #{tag.tag})
+		</foreach>
+	</insert>
 
 </mapper>
