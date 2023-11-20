@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.controller;
 
 import com.ssafy.enjoytrip.dto.MemberDto;
 import com.ssafy.enjoytrip.service.MemberService;
+import com.ssafy.enjoytrip.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @CrossOrigin("*")
@@ -21,22 +23,86 @@ public class MemberController {
     private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     private MemberService service;
+    private JWTUtil jwtUtil;
 
     @Autowired
-    public MemberController(MemberService service) {
+    public MemberController(MemberService service, JWTUtil jwtUtil) {
         super();
         this.service = service;
+        this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody MemberDto memberDto) {
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody MemberDto memberDto) {
+//
+//        try {
+//            MemberDto returnDto = service.login(memberDto);
+//            return new ResponseEntity<>(returnDto, HttpStatus.CREATED);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return new ResponseEntity<>(memberDto, HttpStatus.CONFLICT);
+//        }
+//    }
 
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(
+            @RequestBody MemberDto memberDto) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            MemberDto returnDto = service.login(memberDto);
-            return new ResponseEntity<>(returnDto, HttpStatus.CREATED);
+            MemberDto loginUser = service.login(memberDto);
+            if(loginUser != null) {
+                String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
+                String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
+                log.debug("access token : {}", accessToken);
+                log.debug("refresh token : {}", refreshToken);
+
+//				발급받은 refresh token을 DB에 저장.
+                service.saveRefreshToken(loginUser.getUserId(), refreshToken);
+
+//				JSON으로 token 전달.
+                resultMap.put("access-token", accessToken);
+                resultMap.put("refresh-token", refreshToken);
+
+                status = HttpStatus.CREATED;
+            } else {
+                resultMap.put("message", "아이디 또는 패스워드를 확인해주세요.");
+                status = HttpStatus.UNAUTHORIZED;
+            }
+
         } catch (Exception e) {
-            return new ResponseEntity<>(memberDto, HttpStatus.CONFLICT);
+            System.out.println(e.getMessage());
+            log.debug("로그인 에러 발생 : {}", e);
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @GetMapping("/info/{userId}")
+    public ResponseEntity<Map<String, Object>> getInfo(
+            @PathVariable("userId") String userId,
+            HttpServletRequest request) {
+//		logger.debug("userId : {} ", userId);
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        if (jwtUtil.checkToken(request.getHeader("Authorization"))) {
+            log.info("사용 가능한 토큰!!!");
+            try {
+//				로그인 사용자 정보.
+                MemberDto memberDto = service.userInfo(userId);
+                resultMap.put("userInfo", memberDto);
+                status = HttpStatus.OK;
+            } catch (Exception e) {
+                log.error("정보조회 실패 : {}", e);
+                resultMap.put("message", e.getMessage());
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        } else {
+            log.error("사용 불가능 토큰!!!");
+            status = HttpStatus.UNAUTHORIZED;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
     public Boolean idCheck(String userId) throws Exception{
