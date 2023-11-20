@@ -75,7 +75,7 @@ public class MapRestoController {
 			@ModelAttribute MapRestoDto mapResto) {
 //		public ResponseEntity<?> makeMapRestaurant(@RequestBody MapRestoParamDto mapResto) {
 //		public ResponseEntity<?> makeMapRestaurant(@RequestParam("content") Object mapResto) {
-//		log.info("MapRestoController makeMapRestaurant mapResto: {}", mapResto);
+		log.info("MapRestoController makeMapRestaurant mapResto: {}", mapResto);
 //		for (RestoDto resto : restos) {
 //			System.out.println("makeMapRestaurant resto: "+ resto.toString());			
 //		}

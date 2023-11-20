@@ -142,13 +142,7 @@
 		where resto_api_id = #{restoApiId}
 	</update>
 	
-	<!-- 태그 등록 -->
-	<insert id="registerTags" parameterType="mapRestoDto">
-		insert into tags(map_resto_no_fk, tags)
-		<foreach collection="tags" item="tag" separator=" , ">
-			(#{mapRestoNo}, #{tag})
-		</foreach>
-	</insert>
+
 	
 	<!-- 맛지도리스트 가져오기 -->
 	<select id="getMapRestosList" parameterType="map" resultMap="mapResto">
@@ -232,8 +226,9 @@
 	<insert id="registerTags" parameterType = "mapRestoDto">
 		insert into tags(map_resto_no_fk, tag) values
 		<foreach collection="tags" item="tag" separator=" , ">
-			(#{mapRestoNo}, #{tag.tag})
+			(#{mapRestoNo}, #{tag})
 		</foreach>
 	</insert>
+
 
 </mapper>
