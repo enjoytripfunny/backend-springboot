@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
 import com.ssafy.enjoytrip.dto.RestoDto;
 
 @Repository("MapRestoRepositoryImpl")
@@ -82,6 +83,26 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	@Override
 	public int getTotalMapResto() throws Exception {
 		return session.selectOne(NAMESPACE + "getTotalMapResto");
+	}
+
+	@Override
+	public List<MapRestoMypageDto> getMyMapResto(String userId) throws Exception {
+		return session.selectList(NAMESPACE + "getMyMapResto", userId);
+	}
+
+	@Override
+	public List<MapRestoMypageDto> getLikeMapResto(String userId) throws Exception {
+		return session.selectList(NAMESPACE + "getLikeMapResto", userId);
+	}
+
+	@Override
+	public MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception {
+		return session.selectOne(NAMESPACE + "getDetailMapResto", mapRestoNo);
+	}
+
+	@Override
+	public void registerTags(MapRestoDto mapResto) throws Exception {
+		session.insert(NAMESPACE + "registerTags", mapResto);
 	}
 
 }

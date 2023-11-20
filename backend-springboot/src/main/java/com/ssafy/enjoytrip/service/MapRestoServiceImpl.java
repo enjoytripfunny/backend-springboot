@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
 import com.ssafy.enjoytrip.dto.RestoDto;
 import com.ssafy.enjoytrip.repository.MapRestoRepository;
 
@@ -43,7 +44,9 @@ public class MapRestoServiceImpl implements MapRestoService {
 	@Transactional
 	public void makeMapResto(MapRestoDto mapResto) throws Exception {
 		// 맛지도 만들기
+		System.out.println("mapResto 등록 전: " + mapResto.getMapRestoNo());
 		session.getMapper(MapRestoRepository.class).makeMapResto(mapResto);
+		System.out.println("mapResto 등록 후: " + mapResto.getMapRestoNo());
 		// 파일 등록
 		session.getMapper(MapRestoRepository.class).registerFile(mapResto);
 		// 맛집 등록
@@ -53,16 +56,7 @@ public class MapRestoServiceImpl implements MapRestoService {
 //		session.getMapper(MapRestoRepository.class).registerRestos(resto);
 		// 맛지도에 등록할 맛집 등록
 		session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);
-//		List<String> existResto = new ArrayList<>();
-//		List<RestoDto> newResto = new ArrayList<RestoDto>();
-//		for (RestoDto restoDto : mapResto.getRestos()) {
-//			String res = null;
-//			res = session.getMapper(MapRestoRepository.class).getResto(restoDto.getRestoApiId());
-//			log.debug("MapRestoService makeMapResto/getRestos res: ", res);
-//			if (res != null) {
-//				session.getMapper(MapRestoRepository.class).registerRestos(mapResto);
-//			}
-//		}
+		session.getMapper(MapRestoRepository.class).registerTags(mapResto);
 	}
 
 	@Override
@@ -100,6 +94,29 @@ public class MapRestoServiceImpl implements MapRestoService {
 	@Override
 	public int getTotalMapResto() throws Exception {
 		return session.getMapper(MapRestoRepository.class).getTotalMapResto();
+	}
+
+	@Override
+	public List<MapRestoMypageDto> getMyMapResto(String userId) throws Exception {
+		List<MapRestoMypageDto> myMapRestoList = session.getMapper(MapRestoRepository.class).getMyMapResto(userId);
+		for (MapRestoMypageDto mapResto : myMapRestoList) {
+			mapResto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapResto.getMapRestoNo()));
+		}
+		return myMapRestoList;
+	}
+
+	@Override
+	public List<MapRestoMypageDto> getLikeMapResto(String userId) throws Exception {
+		List<MapRestoMypageDto> likeMapRestoList = session.getMapper(MapRestoRepository.class).getLikeMapResto(userId);
+		for (MapRestoMypageDto mapResto : likeMapRestoList) {
+			mapResto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapResto.getMapRestoNo()));
+		}
+		return likeMapRestoList;
+	}
+
+	@Override
+	public MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception {
+		return session.getMapper(MapRestoRepository.class).getDetailMapResto(mapRestoNo);
 	}
 
 }

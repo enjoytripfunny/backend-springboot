@@ -15,6 +15,14 @@
 		<result column="register_time" property="registerTime"/>
 	</resultMap>
 	
+	<!-- 마이페이지 맛지도 목록 매핑 -->
+	<resultMap type="mapRestoMypageDto" id="mapRestoMypage">
+		<result column="map_resto_no_pk" property="mapRestoNo"/>
+		<result column="user_id_fk" property="userId"/>
+		<result column="subject" property="subject"/>
+	</resultMap>
+	
+	
 	<!-- 맛지도 목록 매핑 -->
 	<resultMap type="mapRestoLikeDto" id="mapRestoLike">
 		<result column="map_resto_no_pk" property="mapRestoNo"/>
@@ -53,6 +61,11 @@
   		</collection>
 	</resultMap>
 	
+	<resultMap type="tagDto" id="tags">
+		<result column="map_resto_no_pk" property="mapRestoNo"/>
+		<result column="tag" property="tag"/>
+	</resultMap>
+	
 	
 <!-- 	
 	<resultMap type="mapRestoDto" id="viewMapResto" extends="mapResto">
@@ -85,7 +98,7 @@
 	<insert id = "makeMapResto" parameterType="mapRestoDto">
 		insert into map_restaurant (user_id_fk, subject, content)
 		values (#{userId}, #{subject}, #{content})
-		<selectKey resultType="int" keyProperty="mapRestoNo" order="AFTER">
+		<selectKey resultType="string" keyProperty="mapRestoNo" order="AFTER">
 			select last_insert_id()
 		</selectKey>
 	</insert>
@@ -93,14 +106,14 @@
 	<!-- 맛지도 생성 시 파일 등록 -->
 	<insert id="registerFile" parameterType="mapRestoDto">
 		insert into file_info (map_resto_no_fk, save_folder, original_file, save_file)
-		values (#{mapRestoNo}, #{saveFolder}, #{originalFile}, #{saveFile})
+		values (#{mapRestoNo}, #{fileInfo.saveFolder}, #{fileInfo.originalFile}, #{fileInfo.saveFile})
 <!-- 		<foreach collection="fileInfos" item="fileinfo" separator=" , ">
 			(#{articleNo}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})
 		</foreach> -->
 	</insert>
 	<insert id="registerFileTest" parameterType="FileInfoDto">
 		insert into file_info (map_resto_no_fk, save_folder, original_file, save_file)
-		values (22, #{saveFolder}, #{originalFile}, #{saveFile})
+		values (18, #{saveFolder}, #{originalFile}, #{saveFile})
 <!-- 		<foreach collection="fileInfos" item="fileinfo" separator=" , ">
 			(#{articleNo}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})
 		</foreach> -->
@@ -109,6 +122,7 @@
 	<!-- 맛지도 생성 시 맛집 등록 -->
 	<insert id="registerUserResto" parameterType="mapRestoDto">
 		insert into user_restaurant (map_resto_no_fk, resto_api_id_fk)
+		values
 		<foreach collection="restos" item="resto" separator=" , ">
 			(#{mapRestoNo}, #{resto.restoApiId})
 		</foreach>
@@ -128,13 +142,7 @@
 		where resto_api_id = #{restoApiId}
 	</update>
 	
-	<!-- 태그 등록 -->
-	<insert id="registerTags" parameterType="mapRestoDto">
-		insert into tags(map_resto_no_fk, tags)
-		<foreach collection="tags" item="tag" separator=" , ">
-			(#{mapRestoNo}, #{tag})
-		</foreach>
-	</insert>
+
 	
 	<!-- 맛지도리스트 가져오기 -->
 	<select id="getMapRestosList" parameterType="map" resultMap="mapResto">
@@ -186,32 +194,41 @@
 	<!-- 게시물의 좋아요 수 변경 -->
 	
 	<!-- 내가 작성한 맛지도 가져오기 -->
-	<select id = "myMapResto" parameterType = "string">
+	<select id = "getMyMapResto" parameterType = "string" resultMap="mapRestoMypage">
 	
 	select map_resto_no_pk, user_id_fk, subject, register_time
 	from map_restaurant
-	where user_id_fk = #{userId};
+	where user_id_fk = #{userId}
 	</select>
 	
 	<!-- 내가 좋아요 누른 맛지도 가져오기 -->
-	<select id = "likeMapResto" parameterType = "string">
+	<select id = "getLikeMapResto" parameterType = "string" resultMap="mapRestoMypage">
 	select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time
 	from map_restaurant mr
 	join like_info li on mr.map_resto_no_pk = li.map_resto_no_fk
-	where li.user_id_fk = #{userId} and li.like_value = 1;
+	where li.user_id_fk = #{userId} and li.like_value = 1
 	</select>
 	
 	<!-- 맛지도 상세 보기 -->
 	<select id = "getDetailMapResto" parameterType = "string" resultMap = "mapResto">
 	select map_resto_no_pk, user_id_fk, subject, content,register_time
 	from map_restaurant
-	where map_resto_no_pk = #{mapRestoNo};	
+	where map_resto_no_pk = #{mapRestoNo}	
 	</select>
 	
 	<!-- 맛지도 총개수 가져오기 -->
 	<select id="getTotalMapResto" resultType="int">
 		select count(*) 
-		from map_restaurant;
+		from map_restaurant
 	</select>
+	
+	<!-- 태그 저장 -->
+	<insert id="registerTags" parameterType = "mapRestoDto">
+		insert into tags(map_resto_no_fk, tag) values
+		<foreach collection="tags" item="tag" separator=" , ">
+			(#{mapRestoNo}, #{tag})
+		</foreach>
+	</insert>
+
 
 </mapper>
