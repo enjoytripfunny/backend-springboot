@@ -19,7 +19,8 @@ import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
  */
 public interface MapRestoService {
 	void makeMapResto(MapRestoDto mapResto) throws Exception;
-	List<MapRestoLikeDto> getMapRestosList(int num) throws Exception;
+	List<MapRestoLikeDto> getMapRestosList(int num, int totalMap) throws Exception;
 //	List<MapRestoDto> getMapRestosList(int num) throws Exception;
 	void registerFileTest(FileInfoDto file) throws Exception;
+	int getTotalMapResto() throws Exception;
 }

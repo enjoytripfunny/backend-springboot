@@ -18,6 +18,8 @@ public interface MapRestoRepository {
 	void registerFileTest(FileInfoDto file) throws Exception;
 	void registerUserResto(MapRestoDto mapResto) throws Exception;
 	List<MapRestoLikeDto> getMapRestosList(Map<String, Object> param) throws Exception;
+	List<MapRestoLikeDto> getMapRestosLikeList(Map<String, Object> param) throws Exception;
 //	List<MapRestoDto> getMapRestosList(Map<String, Object> param) throws Exception;
 	FileInfoDto getFileInfo(String mapRestoNo) throws Exception;
+	int getTotalMapResto() throws Exception;
 }

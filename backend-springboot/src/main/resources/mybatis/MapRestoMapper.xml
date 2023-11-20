@@ -20,8 +20,8 @@
 		<result column="map_resto_no_pk" property="mapRestoNo"/>
 		<result column="user_id_fk" property="userId"/>
 		<result column="subject" property="subject"/>
-		<result column="like_value" property="likeValue"/>
 		<result column="register_time" property="registerTime"/>
+		<result column="like_value" property="likeValue"/>
 	</resultMap>
 	
 	<!-- 맛집 매핑 -->
@@ -100,7 +100,7 @@
 	</insert>
 	<insert id="registerFileTest" parameterType="FileInfoDto">
 		insert into file_info (map_resto_no_fk, save_folder, original_file, save_file)
-		values (13, #{saveFolder}, #{originalFile}, #{saveFile})
+		values (22, #{saveFolder}, #{originalFile}, #{saveFile})
 <!-- 		<foreach collection="fileInfos" item="fileinfo" separator=" , ">
 			(#{articleNo}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})
 		</foreach> -->
@@ -200,11 +200,18 @@
 	join like_info li on mr.map_resto_no_pk = li.map_resto_no_fk
 	where li.user_id_fk = #{userId} and li.like_value = 1;
 	</select>
+	
 	<!-- 맛지도 상세 보기 -->
 	<select id = "getDetailMapResto" parameterType = "string" resultMap = "mapResto">
 	select map_resto_no_pk, user_id_fk, subject, content,register_time
 	from map_restaurant
 	where map_resto_no_pk = #{mapRestoNo};	
+	</select>
+	
+	<!-- 맛지도 총개수 가져오기 -->
+	<select id="getTotalMapResto" resultType="int">
+		select count(*) 
+		from map_restaurant;
 	</select>
 
 </mapper>

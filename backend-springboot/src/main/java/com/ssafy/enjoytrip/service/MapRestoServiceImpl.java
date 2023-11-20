@@ -66,15 +66,28 @@ public class MapRestoServiceImpl implements MapRestoService {
 	}
 
 	@Override
-	public List<MapRestoLikeDto> getMapRestosList(int num) throws Exception {
+	public List<MapRestoLikeDto> getMapRestosList(int num, int totalMap) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("start", num );
-		param.put("listsize", num * 12);
+//		param.put("start", (num - 1) * 12);
+		param.put("start", 0);
+//		param.put("listsize", num * 12);
+		System.out.println("service totalMap: " + totalMap);
+		if (totalMap < num * 12) {
+			param.put("listsize", totalMap);
+		} else {
+			param.put("listsize", num * 12);			
+		}
 		param.put("userId", "ssafy");
 		System.out.println("service map: " + param);
-		List<MapRestoLikeDto> mapRestosList = session.getMapper(MapRestoRepository.class).getMapRestosList(param);
-		for (MapRestoLikeDto mapRestoDto : mapRestosList) {
-			mapRestoDto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoDto.getMapRestoNo()));
+		List<MapRestoLikeDto> mapRestosList = session.getMapper(MapRestoRepository.class).getMapRestosLikeList(param);
+//		for (MapRestoLikeDto mapRestoLike : mapRestosList) {
+//			mapRestoLike.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoLike.getMapRestoNo()));
+//		}
+//		for (MapRestoLikeDto mapRestoLikeDto : mapRestosList) {
+//			System.out.println(mapRestoLikeDto.toString());
+//		}
+		for (MapRestoLikeDto mapRestoLikeDto : mapRestosList) {
+			mapRestoLikeDto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoLikeDto.getMapRestoNo()));
 		}
 		return mapRestosList;
 	}
@@ -82,6 +95,11 @@ public class MapRestoServiceImpl implements MapRestoService {
 	@Override
 	public void registerFileTest(FileInfoDto file) throws Exception {
 		session.getMapper(MapRestoRepository.class).registerFileTest(file);
+	}
+
+	@Override
+	public int getTotalMapResto() throws Exception {
+		return session.getMapper(MapRestoRepository.class).getTotalMapResto();
 	}
 
 }

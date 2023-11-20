@@ -56,9 +56,7 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 
 	@Override
 	public List<MapRestoLikeDto> getMapRestosList(Map<String, Object> param) throws Exception {
-//		return session.selectList(NAMESPACE + "getMapRestoFileList", param);
-//		return session.selectList(NAMESPACE + "getMapRestosList", param);
-		return session.selectList(NAMESPACE + "getMapRestosLikeList", param);
+		return session.selectList(NAMESPACE + "getMapRestosList", param);
 	}
 
 	@Override
@@ -74,6 +72,16 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	@Override
 	public void registerResto(RestoDto resto) throws Exception {
 		session.insert(NAMESPACE + "registerResto", resto);
+	}
+
+	@Override
+	public List<MapRestoLikeDto> getMapRestosLikeList(Map<String, Object> param) throws Exception {
+		return session.selectList(NAMESPACE + "getMapRestosLikeList", param);
+	}
+
+	@Override
+	public int getTotalMapResto() throws Exception {
+		return session.selectOne(NAMESPACE + "getTotalMapResto");
 	}
 
 }

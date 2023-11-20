@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.MapRestoParamDto;
+import com.ssafy.enjoytrip.dto.RestoDto;
 import com.ssafy.enjoytrip.service.MapRestoService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -61,11 +64,26 @@ public class MapRestoController {
 //	@RequestParam("fileInfo") MultipartFile fileInfo, 
 	
 	@PostMapping("reg")
-	public ResponseEntity<?> makeMapRestaurant(@RequestParam("fileInfo") MultipartFile fileInfo, @RequestParam("content") MapRestoDto mapResto) {
-		log.debug("MapRestoController makeMapRestaurant mapResto: ", mapResto);
+//	, @RequestParam("content") MapRestoDto mapResto
+	// @RequestParam("fileInfo") MultipartFile fileInfo, 
+//	
+	public ResponseEntity<?> makeMapRestaurant(
+			@ModelAttribute("mapRestoInfo") MapRestoParamDto mapResto/*
+																		 * , @ModelAttribute("restos") List<RestoDto>
+																		 * restos
+																		 */) {
+//		public ResponseEntity<?> makeMapRestaurant(@RequestBody MapRestoParamDto mapResto) {
+//		public ResponseEntity<?> makeMapRestaurant(@RequestParam("content") Object mapResto) {
+//		log.info("MapRestoController makeMapRestaurant mapResto: {}", mapResto);
 		System.out.println("makeMapRestaurant mapResto: "+ mapResto);
-//		MultipartFile fileInfo = (MultipartFile) mapResto.getFileInfo();
-		if (mapResto.getFileInfo() == null) {
+		System.out.println("make 여기 들어오나?");
+//		for (RestoDto resto : restos) {
+//			System.out.println("makeMapRestaurant resto: "+ resto.toString());			
+//		}
+//		System.out.println("file: " + fileInfo);
+		MultipartFile fileInfo = mapResto.getFile();
+		
+		if (fileInfo != null) {
 			String today = new SimpleDateFormat("yyMMdd").format(new Date());
 			String saveFolder = uploadPath + File.separator + today;
 			logger.debug("저장 폴더 : {}", saveFolder);
@@ -96,28 +114,33 @@ public class MapRestoController {
 //			}
 			mapResto.setFileInfo(fileInfoDto);
 		}
-		
-		try {
-			mapRestoService.makeMapResto(mapResto);
-			return new ResponseEntity<Void>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			return exceptionHandling(e);
-		}
+//		
+//		try {
+//			mapRestoService.makeMapResto(mapResto);
+//			return new ResponseEntity<Void>(HttpStatus.CREATED);
+//		} catch (Exception e) {
+//			return exceptionHandling(e);
+//		}
+		return null;
 	}
 	
 //	@RequestParam("num") int num
 	@GetMapping
-	public ResponseEntity<?> listMapRestaurant() {
-		int num = 1;
-		log.debug("MapRestoController listMapRestaurant map: ", num);
-		System.out.println("list test: " + num);
+	public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num, @RequestParam("total") int totalMap) {
+//		int num = 1;
+		log.info("MapRestoController listMapRestaurant map: {}", num);
 		try {
 //			List<MapRestoDto> mapRestosList = mapRestoService.getMapRestosList(num);
-			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(num);
-			System.out.println("mapRestosList: " + mapRestosList);
+			Map<String,Object> map = new HashMap();
+			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(num, totalMap);
+//			int total = (int) Math.ceil(mapRestoService.getTotalMapResto() / 12.0);
+			int total = mapRestoService.getTotalMapResto();
+			map.put("list", mapRestosList);
+			map.put("total", total);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-			return ResponseEntity.ok().headers(header).body(mapRestosList);
+//			return ResponseEntity.ok().headers(header).body(mapRestosList);
+			return ResponseEntity.ok().headers(header).body(map);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}
