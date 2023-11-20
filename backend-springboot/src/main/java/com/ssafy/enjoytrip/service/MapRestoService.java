@@ -2,11 +2,10 @@ package com.ssafy.enjoytrip.service;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
 
 /*
  * 1. map_restaurant 테이블에  makeMapResto sql 써서 맛지도 등록
@@ -23,4 +22,6 @@ public interface MapRestoService {
 //	List<MapRestoDto> getMapRestosList(int num) throws Exception;
 	void registerFileTest(FileInfoDto file) throws Exception;
 	int getTotalMapResto() throws Exception;
+	List<MapRestoMypageDto> getMyMapResto(String userId) throws Exception;
+	List<MapRestoMypageDto> getLikeMapResto(String userId) throws Exception;
 }

@@ -18,6 +18,10 @@ public class MapRestoParamDto {
 	private String content; //맛지도 간단 설명
 	private MultipartFile file; 
 	private FileInfoDto fileInfo; //맛지도 썸네일
-	private List<RestoDto> restos;
+//	private List<RestoDto> restos;
+	private RestoDto[] restos;
+//	private Object[] restos;
 	private String registerTime; //맛지도 만들어진 날짜
+	
+	
 }

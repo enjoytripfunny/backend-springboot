@@ -32,8 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
-import com.ssafy.enjoytrip.dto.MapRestoParamDto;
-import com.ssafy.enjoytrip.dto.RestoDto;
+import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
 import com.ssafy.enjoytrip.service.MapRestoService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -67,16 +66,15 @@ public class MapRestoController {
 //	, @RequestParam("content") MapRestoDto mapResto
 	// @RequestParam("fileInfo") MultipartFile fileInfo, 
 //	
+	/*
+	 * , @ModelAttribute("restoInfo") RestoDto[]
+	 * restos
+	 */
 	public ResponseEntity<?> makeMapRestaurant(
-			@ModelAttribute("mapRestoInfo") MapRestoParamDto mapResto/*
-																		 * , @ModelAttribute("restos") List<RestoDto>
-																		 * restos
-																		 */) {
+			@ModelAttribute MapRestoDto mapResto) {
 //		public ResponseEntity<?> makeMapRestaurant(@RequestBody MapRestoParamDto mapResto) {
 //		public ResponseEntity<?> makeMapRestaurant(@RequestParam("content") Object mapResto) {
 //		log.info("MapRestoController makeMapRestaurant mapResto: {}", mapResto);
-		System.out.println("makeMapRestaurant mapResto: "+ mapResto);
-		System.out.println("make 여기 들어오나?");
 //		for (RestoDto resto : restos) {
 //			System.out.println("makeMapRestaurant resto: "+ resto.toString());			
 //		}
@@ -115,13 +113,12 @@ public class MapRestoController {
 			mapResto.setFileInfo(fileInfoDto);
 		}
 //		
-//		try {
-//			mapRestoService.makeMapResto(mapResto);
-//			return new ResponseEntity<Void>(HttpStatus.CREATED);
-//		} catch (Exception e) {
-//			return exceptionHandling(e);
-//		}
-		return null;
+		try {
+			mapRestoService.makeMapResto(mapResto);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
 	}
 	
 //	@RequestParam("num") int num
@@ -185,6 +182,36 @@ public class MapRestoController {
 			mapRestoService.registerFileTest(fileInfoDto);
 //		}
 		return ResponseEntity.ok().body(map);
+	}
+	
+	//내가 작성한 맛지도 가져오기
+	@GetMapping("/myMapResto")
+	public ResponseEntity<?> listMyMapRestaurant(@RequestParam("num") int num, @RequestParam String userId) {
+		try {
+			Map<String,Object> map = new HashMap();
+			List<MapRestoMypageDto> myMapResto = mapRestoService.getMyMapResto(userId);
+			map.put("myMapList", myMapResto);
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(map);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+	//좋아요 누른 맛지도 가져오기
+	@GetMapping("/likeMapResto")
+	public ResponseEntity<?> listLikeMapRestaurant(@RequestParam("num") int num, @RequestParam String userId) {
+		try {
+			Map<String,Object> map = new HashMap();
+			List<MapRestoMypageDto> myMapResto = mapRestoService.getLikeMapResto(userId);
+			map.put("likeMapList", myMapResto);
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(map);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
 	}
 	
 }
