@@ -13,6 +13,7 @@
      <typeAlias type="com.ssafy.enjoytrip.dto.MapRestoLikeDto" alias="mapRestoLikeDto"/>
      <typeAlias type="com.ssafy.enjoytrip.dto.MapRestoMypageDto" alias="mapRestoMypageDto"/>
      <typeAlias type="com.ssafy.enjoytrip.dto.TagDto" alias="tagDto"/>
+     <typeAlias type="com.ssafy.enjoytrip.dto.LikeInfoDto" alias="likeInfoDto"/>
   </typeAliases>
 
   <mappers>

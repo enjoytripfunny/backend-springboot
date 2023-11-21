@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.dto.FileInfoDto;
+import com.ssafy.enjoytrip.dto.LikeInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
@@ -238,22 +239,6 @@ public class MapRestoController {
 		try {
 			Map<String,Object> map = new HashMap();
 			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
-			map.put("mapResto", detailMapResto);
-			HttpHeaders header = new HttpHeaders();
-			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-			return ResponseEntity.ok().headers(header).body(map);
-		} catch (Exception e) {
-			return exceptionHandling(e);
-		}
-	}
-	
-	// 특정 맛지도에 저장된 식당들 가져오기
-	@GetMapping("/userResto")
-	public ResponseEntity<?> getUserMapResto(@RequestParam("mapRestoNo") String mapRestoNo) {
-		System.out.println("getUserMapResto 들어옴");
-		try {
-			Map<String,Object> map = new HashMap();
-			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
 			List<RestoDto> userRestoList = mapRestoService.getUserRestoList(mapRestoNo);
 			map.put("mapResto", detailMapResto);
 			map.put("userRestoList", userRestoList);
@@ -264,4 +249,37 @@ public class MapRestoController {
 			return exceptionHandling(e);
 		}
 	}
+	
+	// 좋아요 값 변경
+	@PostMapping("/like")
+	public ResponseEntity<?> changeLike(@RequestBody LikeInfoDto likeInfo) {
+		System.out.println("좋아요 누름 likeInfo: " + likeInfo);
+		try {
+			Map<String,Object> map = new HashMap();
+			mapRestoService.changeLike(likeInfo);
+			map.put("resMsg", "좋아요 변경 성공");
+			return ResponseEntity.ok().body(map);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+	
+	// 특정 맛지도에 저장된 식당들 가져오기
+//	@GetMapping("/userResto")
+//	public ResponseEntity<?> getUserMapResto(@RequestParam("mapRestoNo") String mapRestoNo) {
+//		System.out.println("getUserMapResto 들어옴");
+//		try {
+//			Map<String,Object> map = new HashMap();
+//			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
+//			List<RestoDto> userRestoList = mapRestoService.getUserRestoList(mapRestoNo);
+//			map.put("mapResto", detailMapResto);
+//			map.put("userRestoList", userRestoList);
+//			HttpHeaders header = new HttpHeaders();
+//			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+//			return ResponseEntity.ok().headers(header).body(map);
+//		} catch (Exception e) {
+//			return exceptionHandling(e);
+//		}
+//	}
 }

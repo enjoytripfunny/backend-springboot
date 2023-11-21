@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.enjoytrip.dto.FileInfoDto;
+import com.ssafy.enjoytrip.dto.LikeInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
@@ -30,4 +31,5 @@ public interface MapRestoService {
 	int getTotalMyMapResto(String userId) throws Exception; // 내가 작성한 맛지도 총개수
 	int getTotalLikeMapResto(String userId) throws Exception; // 좋아요한 맛지도 총개수
 	List<RestoDto> getUserRestoList(String mapRestoNo) throws Exception; // 맛지도에 등록된 식당들 가져오기
+	void changeLike(LikeInfoDto likeInfo) throws Exception;
 }

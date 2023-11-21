@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.enjoytrip.dto.FileInfoDto;
+import com.ssafy.enjoytrip.dto.LikeInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
@@ -118,6 +119,11 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	@Override
 	public List<RestoDto> getUserRestoList(String mapRestoNo) throws Exception {
 		return session.selectList(NAMESPACE + "getUserRestoList", mapRestoNo);
+	}
+
+	@Override
+	public void changeLike(LikeInfoDto likeInfo) throws Exception {
+		session.insert(NAMESPACE + "changeLike", likeInfo);
 	}
 
 }

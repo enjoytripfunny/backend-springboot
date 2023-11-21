@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.dto.FileInfoDto;
+import com.ssafy.enjoytrip.dto.LikeInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
@@ -74,12 +75,6 @@ public class MapRestoServiceImpl implements MapRestoService {
 		param.put("userId", "ssafy");
 		System.out.println("service map: " + param);
 		List<MapRestoLikeDto> mapRestosList = session.getMapper(MapRestoRepository.class).getMapRestosLikeList(param);
-//		for (MapRestoLikeDto mapRestoLike : mapRestosList) {
-//			mapRestoLike.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoLike.getMapRestoNo()));
-//		}
-//		for (MapRestoLikeDto mapRestoLikeDto : mapRestosList) {
-//			System.out.println(mapRestoLikeDto.toString());
-//		}
 		for (MapRestoLikeDto mapRestoLikeDto : mapRestosList) {
 			mapRestoLikeDto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoLikeDto.getMapRestoNo()));
 		}
@@ -143,6 +138,11 @@ public class MapRestoServiceImpl implements MapRestoService {
 	@Override
 	public List<RestoDto> getUserRestoList(String mapRestoNo) throws Exception {
 		return session.getMapper(MapRestoRepository.class).getUserRestoList(mapRestoNo);
+	}
+
+	@Override
+	public void changeLike(LikeInfoDto likeInfo) throws Exception {
+		session.getMapper(MapRestoRepository.class).changeLike(likeInfo);
 	}
 
 }

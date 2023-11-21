@@ -178,7 +178,7 @@
 	
 	<!-- 좋아요 누르기 -->
 	<!-- 좋아요 테이블에 값 추가 -->
-	<insert id="registerLike" parameterType="restoDto">
+	<insert id="changeLike" parameterType="likeInfoDto">
 		insert into like_info (user_id_fk, map_resto_no_fk, like_value)
 		values (#{userId}, #{mapRestoNo},#{likeValue})
 		ON DUPLICATE KEY UPDATE like_value = #{likeValue}
