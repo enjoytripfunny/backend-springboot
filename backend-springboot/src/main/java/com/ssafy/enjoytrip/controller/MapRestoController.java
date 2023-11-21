@@ -193,7 +193,7 @@ public class MapRestoController {
 			Map<String,Object> param = new HashMap(); // 인자값 담을 map
 			param.put("userId", userId);
 			param.put("num", num);
-			
+			System.out.println("param: " + param);
 			Map<String,Object> result = new HashMap(); // 결과 담을 map
 			List<MapRestoMypageDto> myMapResto = mapRestoService.getMyMapResto(param);
 			int totalMyMapResto = mapRestoService.getTotalMyMapResto(userId);
@@ -213,10 +213,10 @@ public class MapRestoController {
 	public ResponseEntity<?> listLikeMapRestaurant(@RequestParam("num") int num, @RequestParam String userId) {
 		try {
 			
-			Map<String,Object> param = new HashMap<String, Object>(); // 인자값 담을 map
+			Map<String,Object> param = new HashMap(); // 인자값 담을 map
 			param.put("userId", userId);
 			param.put("num", num);
-			
+			System.out.println("listLikeMapRestaurant param: " + param);
 			List<MapRestoMypageDto> likeMapResto = mapRestoService.getLikeMapResto(param);
 			int totalLikeMapResto = mapRestoService.getTotalLikeMapResto(userId);
 			
@@ -236,7 +236,7 @@ public class MapRestoController {
 	@GetMapping("/view/{mapRestoNo}")
 	public ResponseEntity<?> getDetailMapResto(@PathVariable("mapRestoNo") String mapRestoNo) {
 		try {
-			Map<String,Object> map = new HashMap<String, Object>();
+			Map<String,Object> map = new HashMap();
 			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
 			map.put("mapResto", detailMapResto);
 			HttpHeaders header = new HttpHeaders();
@@ -248,11 +248,14 @@ public class MapRestoController {
 	}
 	
 	// 특정 맛지도에 저장된 식당들 가져오기
-	@GetMapping("/userResto/{mapRestoNo}")
-	public ResponseEntity<?> getUserMapResto(@PathVariable("mapRestoNo") String mapRestoNo) {
+	@GetMapping("/userResto")
+	public ResponseEntity<?> getUserMapResto(@RequestParam("mapRestoNo") String mapRestoNo) {
+		System.out.println("getUserMapResto 들어옴");
 		try {
-			Map<String,Object> map = new HashMap<String, Object>();
+			Map<String,Object> map = new HashMap();
+			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
 			List<RestoDto> userRestoList = mapRestoService.getUserRestoList(mapRestoNo);
+			map.put("mapResto", detailMapResto);
 			map.put("userRestoList", userRestoList);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
