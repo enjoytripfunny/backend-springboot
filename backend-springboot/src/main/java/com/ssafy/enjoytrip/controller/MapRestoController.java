@@ -64,25 +64,13 @@ public class MapRestoController {
 	}
 	
 //	@RequestParam("fileInfo") MultipartFile fileInfo, 
-	
 	@PostMapping("reg")
-//	, @RequestParam("content") MapRestoDto mapResto
-	// @RequestParam("fileInfo") MultipartFile fileInfo, 
-//	
-	/*
-	 * , @ModelAttribute("restoInfo") RestoDto[]
-	 * restos
-	 */
 	public ResponseEntity<?> makeMapRestaurant(
 			@ModelAttribute MapRestoDto mapResto) {
-//		public ResponseEntity<?> makeMapRestaurant(@RequestBody MapRestoParamDto mapResto) {
-//		public ResponseEntity<?> makeMapRestaurant(@RequestParam("content") Object mapResto) {
 		log.info("MapRestoController makeMapRestaurant mapResto: {}", mapResto);
-//		for (RestoDto resto : restos) {
-//			System.out.println("makeMapRestaurant resto: "+ resto.toString());			
-//		}
-//		System.out.println("file: " + fileInfo);
+
 		MultipartFile fileInfo = mapResto.getFile();
+		System.out.println("file: " + fileInfo);
 		
 		if (fileInfo != null) {
 			String today = new SimpleDateFormat("yyMMdd").format(new Date());
@@ -92,8 +80,6 @@ public class MapRestoController {
 			if (!folder.exists())
 				folder.mkdirs();
 			FileInfoDto fileInfoDto = new FileInfoDto();
-//			for (MultipartFile mfile : files) {
-//				FileInfoDto fileInfoDto = new FileInfoDto();
 				String originalFileName = fileInfo.getOriginalFilename();
 				if (!originalFileName.isEmpty()) {
 					String saveFileName = UUID.randomUUID().toString()
@@ -101,6 +87,7 @@ public class MapRestoController {
 					fileInfoDto.setSaveFolder(today);
 					fileInfoDto.setOriginalFile(originalFileName);
 					fileInfoDto.setSaveFile(saveFileName);
+					System.out.println("fileInfoDto: " + fileInfoDto.toString());
 //					logger.debug("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", fileInfo.getOriginalFilename(), saveFileName);
 					try {
 						fileInfo.transferTo(new File(folder, saveFileName));
@@ -112,10 +99,8 @@ public class MapRestoController {
 						e.printStackTrace();
 					}
 				}
-//			}
 			mapResto.setFileInfo(fileInfoDto);
 		}
-//		
 		try {
 			mapRestoService.makeMapResto(mapResto);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -124,22 +109,17 @@ public class MapRestoController {
 		}
 	}
 	
-//	@RequestParam("num") int num
 	@GetMapping
 	public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num, @RequestParam("total") int totalMap) {
-//		int num = 1;
 		log.info("MapRestoController listMapRestaurant map: {}", num);
 		try {
-//			List<MapRestoDto> mapRestosList = mapRestoService.getMapRestosList(num);
 			Map<String,Object> map = new HashMap();
 			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(num, totalMap);
-//			int total = (int) Math.ceil(mapRestoService.getTotalMapResto() / 12.0);
 			int total = mapRestoService.getTotalMapResto();
 			map.put("list", mapRestosList);
 			map.put("total", total);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-//			return ResponseEntity.ok().headers(header).body(mapRestosList);
 			return ResponseEntity.ok().headers(header).body(map);
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -161,8 +141,7 @@ public class MapRestoController {
 		if (!folder.exists())
 			folder.mkdirs();
 		FileInfoDto fileInfoDto = new FileInfoDto();
-//		for (MultipartFile mfile : files) {
-//			FileInfoDto fileInfoDto = new FileInfoDto();
+
 			String originalFileName = fileInfo.getOriginalFilename();
 			if (!originalFileName.isEmpty()) {
 				String saveFileName = UUID.randomUUID().toString()
@@ -183,7 +162,6 @@ public class MapRestoController {
 				}
 			}
 			mapRestoService.registerFileTest(fileInfoDto);
-//		}
 		return ResponseEntity.ok().body(map);
 	}
 	

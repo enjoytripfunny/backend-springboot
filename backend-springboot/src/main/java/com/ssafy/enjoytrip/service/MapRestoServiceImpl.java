@@ -50,13 +50,18 @@ public class MapRestoServiceImpl implements MapRestoService {
 		System.out.println("mapResto 등록 후: " + mapResto.getMapRestoNo());
 		// 파일 등록
 		session.getMapper(MapRestoRepository.class).registerFile(mapResto);
+		System.out.println("파일 등록 완료");
 		// 맛집 등록
-		for (RestoDto resto : mapResto.getRestos()) {
-			session.getMapper(MapRestoRepository.class).registerResto(resto);		
+		System.out.println("mapResto.getRestos(): " + mapResto.getRestos());
+		if (mapResto.getRestos() != null ) {
+			for (int i = 0; i < mapResto.getRestos().length; i++) {
+				session.getMapper(MapRestoRepository.class).registerResto(mapResto.getRestos()[i]);
+			}
+			session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);			
 		}
+		System.out.println("맛집 저장 완료");
 //		session.getMapper(MapRestoRepository.class).registerRestos(resto);
 		// 맛지도에 등록할 맛집 등록
-		session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);
 		session.getMapper(MapRestoRepository.class).registerTags(mapResto);
 	}
 
