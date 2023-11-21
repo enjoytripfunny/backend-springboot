@@ -34,6 +34,7 @@ import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
+import com.ssafy.enjoytrip.dto.RestoDto;
 import com.ssafy.enjoytrip.service.MapRestoService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -187,15 +188,21 @@ public class MapRestoController {
 	
 	//내가 작성한 맛지도 가져오기
 	@GetMapping("/myMapResto")
-	public ResponseEntity<?> listMyMapRestaurant(@RequestParam String userId) {
+	public ResponseEntity<?> listMyMapRestaurant(@RequestParam("num") int num, @RequestParam String userId) {
 		try {
-			Map<String,Object> map = new HashMap();
-			List<MapRestoMypageDto> myMapResto = mapRestoService.getMyMapResto(userId);
+			Map<String,Object> param = new HashMap(); // 인자값 담을 map
+			param.put("userId", userId);
+			param.put("num", num);
+			
+			Map<String,Object> result = new HashMap(); // 결과 담을 map
+			List<MapRestoMypageDto> myMapResto = mapRestoService.getMyMapResto(param);
+			int totalMyMapResto = mapRestoService.getTotalMyMapResto(userId);
 			System.out.println("myMapResto List: " + myMapResto);
-			map.put("myMapList", myMapResto);
+			result.put("myMapList", myMapResto);
+			result.put("totalMyMapResto", totalMyMapResto);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-			return ResponseEntity.ok().headers(header).body(map);
+			return ResponseEntity.ok().headers(header).body(result);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}
@@ -205,9 +212,33 @@ public class MapRestoController {
 	@GetMapping("/likeMapResto")
 	public ResponseEntity<?> listLikeMapRestaurant(@RequestParam("num") int num, @RequestParam String userId) {
 		try {
-			Map<String,Object> map = new HashMap();
-			List<MapRestoMypageDto> myMapResto = mapRestoService.getLikeMapResto(userId);
-			map.put("likeMapList", myMapResto);
+			
+			Map<String,Object> param = new HashMap<String, Object>(); // 인자값 담을 map
+			param.put("userId", userId);
+			param.put("num", num);
+			
+			List<MapRestoMypageDto> likeMapResto = mapRestoService.getLikeMapResto(param);
+			int totalLikeMapResto = mapRestoService.getTotalLikeMapResto(userId);
+			
+			Map<String,Object> result = new HashMap<String, Object>(); // 결과 담을 map
+			result.put("likeMapList", likeMapResto);
+			result.put("totalLikeMapResto", totalLikeMapResto);
+			
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(result);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+	// 맛지도 상세 보기
+	@GetMapping("/view/{mapRestoNo}")
+	public ResponseEntity<?> getDetailMapResto(@PathVariable("mapRestoNo") String mapRestoNo) {
+		try {
+			Map<String,Object> map = new HashMap<String, Object>();
+			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
+			map.put("mapResto", detailMapResto);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 			return ResponseEntity.ok().headers(header).body(map);
@@ -216,13 +247,13 @@ public class MapRestoController {
 		}
 	}
 	
-	// 
-	@GetMapping("/view/{mapRestoNo}")
-	public ResponseEntity<?> getDetailMapResto(@PathVariable("mapRestoNo") String mapRestoNo) {
+	// 특정 맛지도에 저장된 식당들 가져오기
+	@GetMapping("/userResto/{mapRestoNo}")
+	public ResponseEntity<?> getUserMapResto(@PathVariable("mapRestoNo") String mapRestoNo) {
 		try {
-			Map<String,Object> map = new HashMap();
-			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
-			map.put("mapResto", detailMapResto);
+			Map<String,Object> map = new HashMap<String, Object>();
+			List<RestoDto> userRestoList = mapRestoService.getUserRestoList(mapRestoNo);
+			map.put("userRestoList", userRestoList);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 			return ResponseEntity.ok().headers(header).body(map);

@@ -1,11 +1,13 @@
 package com.ssafy.enjoytrip.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
+import com.ssafy.enjoytrip.dto.RestoDto;
 
 /*
  * 1. map_restaurant 테이블에  makeMapResto sql 써서 맛지도 등록
@@ -22,7 +24,10 @@ public interface MapRestoService {
 //	List<MapRestoDto> getMapRestosList(int num) throws Exception;
 	void registerFileTest(FileInfoDto file) throws Exception;
 	int getTotalMapResto() throws Exception;
-	List<MapRestoMypageDto> getMyMapResto(String userId) throws Exception;
-	List<MapRestoMypageDto> getLikeMapResto(String userId) throws Exception;
+	List<MapRestoMypageDto> getMyMapResto(Map<String, Object> map) throws Exception;
+	List<MapRestoMypageDto> getLikeMapResto(Map<String, Object> map) throws Exception;
 	MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception;
+	int getTotalMyMapResto(String userId) throws Exception; // 내가 작성한 맛지도 총개수
+	int getTotalLikeMapResto(String userId) throws Exception; // 좋아요한 맛지도 총개수
+	List<RestoDto> getUserRestoList(String mapRestoNo) throws Exception; // 맛지도에 등록된 식당들 가져오기
 }

@@ -97,8 +97,12 @@ public class MapRestoServiceImpl implements MapRestoService {
 	}
 
 	@Override
-	public List<MapRestoMypageDto> getMyMapResto(String userId) throws Exception {
-		List<MapRestoMypageDto> myMapRestoList = session.getMapper(MapRestoRepository.class).getMyMapResto(userId);
+	public List<MapRestoMypageDto> getMyMapResto(Map<String, Object> map) throws Exception {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("userId", map.get("userId"));
+		param.put("start", (int)map.get("num") * 4);
+		param.put("listsize", 4);
+		List<MapRestoMypageDto> myMapRestoList = session.getMapper(MapRestoRepository.class).getMyMapResto(param);
 		for (MapRestoMypageDto mapResto : myMapRestoList) {
 			mapResto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapResto.getMapRestoNo()));
 		}
@@ -106,9 +110,14 @@ public class MapRestoServiceImpl implements MapRestoService {
 	}
 
 	@Override
-	public List<MapRestoMypageDto> getLikeMapResto(String userId) throws Exception {
-		List<MapRestoMypageDto> likeMapRestoList = session.getMapper(MapRestoRepository.class).getLikeMapResto(userId);
+	public List<MapRestoMypageDto> getLikeMapResto(Map<String, Object> map) throws Exception {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("userId", map.get("userId"));
+		param.put("start", (int)map.get("num") * 4);
+		param.put("listsize", 4);
+		List<MapRestoMypageDto> likeMapRestoList = session.getMapper(MapRestoRepository.class).getLikeMapResto(param);
 		for (MapRestoMypageDto mapResto : likeMapRestoList) {
+			System.out.println("like mapResto: " + mapResto.toString());
 			mapResto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapResto.getMapRestoNo()));
 		}
 		return likeMapRestoList;
@@ -117,6 +126,21 @@ public class MapRestoServiceImpl implements MapRestoService {
 	@Override
 	public MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception {
 		return session.getMapper(MapRestoRepository.class).getDetailMapResto(mapRestoNo);
+	}
+
+	@Override
+	public int getTotalMyMapResto(String userId) throws Exception {
+		return session.getMapper(MapRestoRepository.class).getTotalMyMapResto(userId);
+	}
+
+	@Override
+	public int getTotalLikeMapResto(String userId) throws Exception {
+		return session.getMapper(MapRestoRepository.class).getTotalLikeMapResto(userId);
+	}
+
+	@Override
+	public List<RestoDto> getUserRestoList(String mapRestoNo) throws Exception {
+		return session.getMapper(MapRestoRepository.class).getUserRestoList(mapRestoNo);
 	}
 
 }
