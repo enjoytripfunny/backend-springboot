@@ -68,22 +68,14 @@ public class MapRestoServiceImpl implements MapRestoService {
 
 	@Override
 	public List<MapRestoLikeDto> getMapRestosList(MapRestoListParamDto param) throws Exception {
-//		Map<String, Object> param = new HashMap<String, Object>();
-//		param.put("start", (num - 1) * 12);
-//		int total = Integer.parseInt(param.getTotal());
-//		int num = Integer.parseInt(param.getNum());
-//		if (total < num * 12) {
-//			param.setTotal(total + "");
-//		} else {
-//			param.setTotal((num * 12) + "");			
-//		}
 		int total = param.getTotal();
 		int num = param.getNum();
-		if (total < num * 12) {
-			param.setTotal(total);
-		} else {
-			param.setTotal((num + 1)* 12);
-		}
+//		if (total < num * 12) {
+//			param.setTotal(total);
+//		} else {
+//			param.setTotal((num + 1)* 12);
+//		}
+		param.setTotal((num + 1)* 12);
 		System.out.println("service param: " + param);
 		List<MapRestoLikeDto> mapRestosList = session.getMapper(MapRestoRepository.class).getMapRestosLikeList(param);
 		for (MapRestoLikeDto mapRestoLikeDto : mapRestosList) {
@@ -123,7 +115,6 @@ public class MapRestoServiceImpl implements MapRestoService {
 		param.put("listsize", 4);
 		List<MapRestoMypageDto> likeMapRestoList = session.getMapper(MapRestoRepository.class).getLikeMapResto(param);
 		for (MapRestoMypageDto mapResto : likeMapRestoList) {
-			System.out.println("like mapResto: " + mapResto.toString());
 			mapResto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapResto.getMapRestoNo()));
 		}
 		return likeMapRestoList;
