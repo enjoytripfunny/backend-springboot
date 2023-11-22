@@ -7,6 +7,7 @@ import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.LikeInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.MapRestoListParamDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
 import com.ssafy.enjoytrip.dto.RestoDto;
 
@@ -20,7 +21,7 @@ public interface MapRestoRepository {
 	void registerFileTest(FileInfoDto file) throws Exception; //파일 업로드 테스트용
 	void registerUserResto(MapRestoDto mapResto) throws Exception; // 내 맛지도에 저장한 식당 저장하기
 	List<MapRestoLikeDto> getMapRestosList(Map<String, Object> param) throws Exception; //좋아요 값 제외 맛지도 목록 불러오기
-	List<MapRestoLikeDto> getMapRestosLikeList(Map<String, Object> param) throws Exception; //좋아요 포함 맛지도 목록 불러오기
+	List<MapRestoLikeDto> getMapRestosLikeList(MapRestoListParamDto param) throws Exception; //좋아요 포함 맛지도 목록 불러오기
 	FileInfoDto getFileInfo(String mapRestoNo) throws Exception; // 파일 정보 불러오기
 	int getTotalMapResto() throws Exception; // 맛지도 목록 개수
 	List<MapRestoMypageDto> getMyMapResto(Map<String, Object> param) throws Exception; // 내가 작성한 맛지도 불러오기

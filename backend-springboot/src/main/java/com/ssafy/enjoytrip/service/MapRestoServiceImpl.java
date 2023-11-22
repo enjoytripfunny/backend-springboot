@@ -14,6 +14,7 @@ import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.LikeInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.MapRestoListParamDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
 import com.ssafy.enjoytrip.dto.RestoDto;
 import com.ssafy.enjoytrip.repository.MapRestoRepository;
@@ -66,19 +67,24 @@ public class MapRestoServiceImpl implements MapRestoService {
 	}
 
 	@Override
-	public List<MapRestoLikeDto> getMapRestosList(int num, int totalMap) throws Exception {
-		Map<String, Object> param = new HashMap<String, Object>();
+	public List<MapRestoLikeDto> getMapRestosList(MapRestoListParamDto param) throws Exception {
+//		Map<String, Object> param = new HashMap<String, Object>();
 //		param.put("start", (num - 1) * 12);
-		param.put("start", 0);
-//		param.put("listsize", num * 12);
-		System.out.println("service totalMap: " + totalMap);
-		if (totalMap < num * 12) {
-			param.put("listsize", totalMap);
+//		int total = Integer.parseInt(param.getTotal());
+//		int num = Integer.parseInt(param.getNum());
+//		if (total < num * 12) {
+//			param.setTotal(total + "");
+//		} else {
+//			param.setTotal((num * 12) + "");			
+//		}
+		int total = param.getTotal();
+		int num = param.getNum();
+		if (total < num * 12) {
+			param.setTotal(total);
 		} else {
-			param.put("listsize", num * 12);			
+			param.setTotal(num * 12);
 		}
-		param.put("userId", "ssafy");
-		System.out.println("service map: " + param);
+		System.out.println("service param: " + param);
 		List<MapRestoLikeDto> mapRestosList = session.getMapper(MapRestoRepository.class).getMapRestosLikeList(param);
 		for (MapRestoLikeDto mapRestoLikeDto : mapRestosList) {
 			mapRestoLikeDto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoLikeDto.getMapRestoNo()));

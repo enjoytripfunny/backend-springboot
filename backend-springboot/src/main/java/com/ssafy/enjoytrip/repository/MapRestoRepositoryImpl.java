@@ -11,6 +11,7 @@ import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.LikeInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.MapRestoListParamDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
 import com.ssafy.enjoytrip.dto.RestoDto;
 
@@ -77,7 +78,7 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	}
 
 	@Override
-	public List<MapRestoLikeDto> getMapRestosLikeList(Map<String, Object> param) throws Exception {
+	public List<MapRestoLikeDto> getMapRestosLikeList(MapRestoListParamDto param) throws Exception {
 		return session.selectList(NAMESPACE + "getMapRestosLikeList", param);
 	}
 

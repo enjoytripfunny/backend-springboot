@@ -144,7 +144,7 @@
 	</select>
 	
 	<!-- 맛지도 리스트와 좋아요까지 가져오기 -->
-	<select id="getMapRestosLikeList" parameterType="map" resultMap="mapRestoLike">
+	<select id="getMapRestosLikeList" parameterMap="mapRestoListParamDto" resultMap="mapRestoLike">
 <!-- 		select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time, li.like_value
 		from map_restaurant mr
 		left join like_info li
@@ -153,7 +153,7 @@
 		select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time,
 		(select like_value from like_info where user_id_fk = #{userId} and mr.map_resto_no_pk = map_resto_no_fk) as like_value
 		from map_restaurant mr
-		limit #{start}, #{listsize}
+		limit 0, #{total}
 	</select>
 	
 	<select id="getFileInfo" parameterType="string" resultMap="file">

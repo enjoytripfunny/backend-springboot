@@ -34,6 +34,7 @@ import com.ssafy.enjoytrip.dto.FileInfoDto;
 import com.ssafy.enjoytrip.dto.LikeInfoDto;
 import com.ssafy.enjoytrip.dto.MapRestoDto;
 import com.ssafy.enjoytrip.dto.MapRestoLikeDto;
+import com.ssafy.enjoytrip.dto.MapRestoListParamDto;
 import com.ssafy.enjoytrip.dto.MapRestoMypageDto;
 import com.ssafy.enjoytrip.dto.RestoDto;
 import com.ssafy.enjoytrip.service.MapRestoService;
@@ -109,12 +110,17 @@ public class MapRestoController {
 		}
 	}
 	
+//	public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num, @RequestParam("total") int totalMap) {
 	@GetMapping
-	public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num, @RequestParam("total") int totalMap) {
-		log.info("MapRestoController listMapRestaurant map: {}", num);
+	public ResponseEntity<?> listMapRestaurant(@RequestBody MapRestoListParamDto param) {
+		log.info("MapRestoController listMapRestaurant param: {}", param.toString());
+		System.out.println(param.toString());
 		try {
 			Map<String,Object> map = new HashMap();
-			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(num, totalMap);
+			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(param);
+			for (MapRestoLikeDto mapRestoLikeDto : mapRestosList) {
+				System.out.println(mapRestoLikeDto.toString());
+			}
 			int total = mapRestoService.getTotalMapResto();
 			map.put("list", mapRestosList);
 			map.put("total", total);

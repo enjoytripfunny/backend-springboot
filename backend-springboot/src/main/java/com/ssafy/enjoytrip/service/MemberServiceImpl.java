@@ -22,7 +22,9 @@ public class MemberServiceImpl implements MemberService {
     public MemberDto login(MemberDto memberDto) throws Exception {
         System.out.println("service >> " + memberDto);
 
-        return session.getMapper(MemberRepository.class).login(memberDto);
+        MemberDto login = session.getMapper(MemberRepository.class).login(memberDto);
+        System.out.println("service login: " +login);
+        return login;
     }
 
     @Override
