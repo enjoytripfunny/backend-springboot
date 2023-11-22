@@ -4,6 +4,12 @@ import com.ssafy.enjoytrip.dto.MemberDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.print.attribute.standard.MediaSize;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 @Repository("MemberRepositoryImpl")
 public class MemberRepositoryImpl implements MemberRepository {
     SqlSession session;
@@ -17,6 +23,17 @@ public class MemberRepositoryImpl implements MemberRepository {
         System.out.println("repo >>" + memberDto);
         return session.selectOne(NAMESPACE+"login", memberDto);
     }
+
+    @Override
+    public MemberDto userInfo(String userId) throws Exception {
+        return session.selectOne(NAMESPACE+"userInfo", userId);
+    }
+
+    @Override
+    public void saveRefreshToken(Map<String, String> map)  throws SQLException {
+        session.update(NAMESPACE+"saveRefreshToken", map);
+    }
+
     @Override
     public int idCheck(String userId) throws Exception {
         return session.selectOne(NAMESPACE+"idCheck", userId);

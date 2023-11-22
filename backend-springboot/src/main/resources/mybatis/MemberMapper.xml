@@ -6,22 +6,35 @@
 
 <mapper namespace="com.ssafy.enjoytrip.repository.MemberRepository">
 
-    <resultMap type="memberDto" id="memberDto">
+    <resultMap type="memberDto" id="member">
         <result column="user_id" property="userId" />
         <result column="user_name" property="userName" />
         <result column="user_password" property="userPassword" />
         <result column="email_id" property="emailId" />
         <result column="email_domain" property="emailDomain" />
+        <result column="join_date" property="joinDate"/>
+        <result column="token" property="refreshToken" />
     </resultMap>
 
     <!-- login -->
     <!-- parameterType을 parameterMap으로 설정해서 에러남 .... -->
-    <!-- 왜... parameter는 Type이고... result는 Map이야... -->
-    <select id="login" parameterType="memberDto" resultMap="memberDto">
-        select user_id, user_name, user_password, email_id, email_domain
+    <select id="login" parameterType="map" resultMap="member">
+        select user_id, user_name, token
         from members
         where user_id = #{userId} and user_password = #{userPassword}
     </select>
+
+    <select id="userInfo" parameterType="string" resultMap="member">
+        select user_name, user_id, email_id, email_domain, join_date
+        from members
+        where user_id = #{userId}
+    </select>
+
+    <update id="saveRefreshToken" parameterType="map">
+        update members
+        set token = #{token}
+        where user_id = #{userId}
+    </update>
 
     <!-- id exist check -->
     <select id="idCheck" parameterType="String" resultType="int">

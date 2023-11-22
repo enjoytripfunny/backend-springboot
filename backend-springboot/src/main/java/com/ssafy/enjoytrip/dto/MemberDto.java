@@ -15,4 +15,7 @@ public class MemberDto {
     private String userPassword;
     private String emailId;
     private String emailDomain;
+    private String token;
+    private String joinDate;
+    private String refreshToken;
 }
