@@ -53,4 +53,10 @@ public class MemberRepositoryImpl implements MemberRepository {
     public void memberDelete(String userId) throws Exception {
         session.delete(NAMESPACE+"memberDelete", userId);
     }
+
+	@Override
+	public void deleteRefreshToken(Map<String, String> map) throws Exception {
+
+		session.update(NAMESPACE + "deleteRefreshToken", map);
+	}
 }

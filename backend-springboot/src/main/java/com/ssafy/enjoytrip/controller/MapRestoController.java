@@ -111,7 +111,7 @@ public class MapRestoController {
 	}
 	
 //	public ResponseEntity<?> listMapRestaurant(@RequestParam("num") int num, @RequestParam("total") int totalMap) {
-	@GetMapping
+	@PostMapping("/list")
 	public ResponseEntity<?> listMapRestaurant(@RequestBody MapRestoListParamDto param) {
 		log.info("MapRestoController listMapRestaurant param: {}", param.toString());
 		System.out.println(param.toString());

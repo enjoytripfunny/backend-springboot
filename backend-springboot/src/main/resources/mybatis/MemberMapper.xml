@@ -61,4 +61,11 @@
         delete from members
         where user_id = #{userId}
     </delete>
+    
+    <!-- refresh token 지우기 -->
+    <update id="deleteRefreshToken" parameterType="map">
+		update members
+		set token = #{token, jdbcType=VARCHAR}
+		where user_id = #{userId}
+	</update>
 </mapper>

@@ -82,7 +82,7 @@ public class MapRestoServiceImpl implements MapRestoService {
 		if (total < num * 12) {
 			param.setTotal(total);
 		} else {
-			param.setTotal(num * 12);
+			param.setTotal((num + 1)* 12);
 		}
 		System.out.println("service param: " + param);
 		List<MapRestoLikeDto> mapRestosList = session.getMapper(MapRestoRepository.class).getMapRestosLikeList(param);

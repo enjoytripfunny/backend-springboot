@@ -60,4 +60,11 @@ public class MemberServiceImpl implements MemberService {
     public void memberDelete(String userId) throws Exception {
         session.getMapper(MemberRepository.class).memberDelete(userId);
     }
+	@Override
+	public void deleRefreshToken(String userId) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("token", null);
+		session.getMapper(MemberRepository.class).deleteRefreshToken(map);
+	}
 }

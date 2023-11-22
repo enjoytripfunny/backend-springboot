@@ -144,7 +144,7 @@
 	</select>
 	
 	<!-- 맛지도 리스트와 좋아요까지 가져오기 -->
-	<select id="getMapRestosLikeList" parameterMap="mapRestoListParamDto" resultMap="mapRestoLike">
+	<select id="getMapRestosLikeList" parameterType="mapRestoListParamDto" resultMap="mapRestoLike">
 <!-- 		select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time, li.like_value
 		from map_restaurant mr
 		left join like_info li
