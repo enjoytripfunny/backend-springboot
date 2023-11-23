@@ -190,7 +190,6 @@
 		select map_resto_no_pk, user_id_fk, subject
 		from map_restaurant
 		where user_id_fk = #{userId}
-		limit #{start}, #{listsize}
 	</select>
 	
 	<!-- 내가 좋아요 누른 맛지도 가져오기 -->
@@ -199,7 +198,6 @@
 		from map_restaurant mr
 		join like_info li on mr.map_resto_no_pk = li.map_resto_no_fk
 		where li.user_id_fk = #{userId} and li.like_value = 1
-		limit #{start}, #{listsize}
 	</select>
 	
 	<!-- 맛지도 상세 보기 -->

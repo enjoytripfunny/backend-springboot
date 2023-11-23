@@ -118,9 +118,6 @@ public class MapRestoController {
 		try {
 			Map<String,Object> map = new HashMap();
 			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(param);
-			for (MapRestoLikeDto mapRestoLikeDto : mapRestosList) {
-				System.out.println(mapRestoLikeDto.toString());
-			}
 			int total = mapRestoService.getTotalMapResto();
 			map.put("list", mapRestosList);
 			map.put("total", total);
@@ -250,20 +247,20 @@ public class MapRestoController {
 	
 	
 	// 특정 맛지도에 저장된 식당들 가져오기
-//	@GetMapping("/userResto")
-//	public ResponseEntity<?> getUserMapResto(@RequestParam("mapRestoNo") String mapRestoNo) {
-//		System.out.println("getUserMapResto 들어옴");
-//		try {
-//			Map<String,Object> map = new HashMap();
-//			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
-//			List<RestoDto> userRestoList = mapRestoService.getUserRestoList(mapRestoNo);
-//			map.put("mapResto", detailMapResto);
-//			map.put("userRestoList", userRestoList);
-//			HttpHeaders header = new HttpHeaders();
-//			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-//			return ResponseEntity.ok().headers(header).body(map);
-//		} catch (Exception e) {
-//			return exceptionHandling(e);
-//		}
-//	}
+	@GetMapping("/userResto/{mapRestoNo}")
+	public ResponseEntity<?> getUserMapResto(@PathVariable("mapRestoNo") String mapRestoNo) {
+		System.out.println("getUserMapResto mapRestoNo:" + mapRestoNo);
+		try {
+			Map<String,Object> map = new HashMap();
+			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
+			List<RestoDto> userRestoList = mapRestoService.getUserRestoList(mapRestoNo);
+			map.put("mapResto", detailMapResto);
+			map.put("userRestoList", userRestoList);
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(map);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
 }

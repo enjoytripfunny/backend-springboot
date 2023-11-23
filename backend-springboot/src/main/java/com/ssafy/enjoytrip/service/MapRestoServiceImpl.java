@@ -46,24 +46,27 @@ public class MapRestoServiceImpl implements MapRestoService {
 	@Transactional
 	public void makeMapResto(MapRestoDto mapResto) throws Exception {
 		// 맛지도 만들기
-		System.out.println("mapResto 등록 전: " + mapResto.getMapRestoNo());
 		session.getMapper(MapRestoRepository.class).makeMapResto(mapResto);
-		System.out.println("mapResto 등록 후: " + mapResto.getMapRestoNo());
+		System.out.println("맛지도 등록 완료 (1/5)");
 		// 파일 등록
 		session.getMapper(MapRestoRepository.class).registerFile(mapResto);
-		System.out.println("파일 등록 완료");
+		System.out.println("파일 등록 완료 (2/5");
 		// 맛집 등록
-		System.out.println("mapResto.getRestos(): " + mapResto.getRestos());
 		if (mapResto.getRestos() != null ) {
 			for (int i = 0; i < mapResto.getRestos().length; i++) {
 				session.getMapper(MapRestoRepository.class).registerResto(mapResto.getRestos()[i]);
 			}
-			session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);			
+			System.out.println("식당 등록 완료 (3/5");
+			session.getMapper(MapRestoRepository.class).registerUserResto(mapResto);	
+			System.out.println("사용자 맛지도의 식당 등록 완료 (4/5");
 		}
-		System.out.println("맛집 저장 완료");
 //		session.getMapper(MapRestoRepository.class).registerRestos(resto);
 		// 맛지도에 등록할 맛집 등록
-		session.getMapper(MapRestoRepository.class).registerTags(mapResto);
+		if (mapResto.getTags() != null) {
+			session.getMapper(MapRestoRepository.class).registerTags(mapResto);
+			System.out.println("태그 등록 완료 (5/5)");			
+		}
+		System.out.println("태그 없음 (5/5)");	
 	}
 
 	@Override

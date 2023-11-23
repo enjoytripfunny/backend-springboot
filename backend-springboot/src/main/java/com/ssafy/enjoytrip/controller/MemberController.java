@@ -66,6 +66,7 @@ public class MemberController {
 
                 status = HttpStatus.CREATED;
             } else {
+            	System.out.println("회원 정보 없음");
                 resultMap.put("message", "아이디 또는 패스워드를 확인해주세요.");
                 status = HttpStatus.UNAUTHORIZED;
             }
@@ -168,6 +169,7 @@ public class MemberController {
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestBody MemberDto memberDto, HttpServletRequest request)
 			throws Exception {
+		System.out.println("access token 재발급");
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		String token = request.getHeader("refreshToken");
