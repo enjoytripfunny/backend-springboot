@@ -164,4 +164,26 @@ public class MemberController {
         }
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+    
+	@PostMapping("/refresh")
+	public ResponseEntity<?> refreshToken(@RequestBody MemberDto memberDto, HttpServletRequest request)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		String token = request.getHeader("refreshToken");
+		log.debug("token : {}, memberDto : {}", token, memberDto);
+		if (jwtUtil.checkToken(token)) {
+			if (token.equals(service.getRefreshToken(memberDto.getUserId()))) {
+				String accessToken = jwtUtil.createAccessToken(memberDto.getUserId());
+				log.debug("token : {}", accessToken);
+				log.debug("정상적으로 액세스토큰 재발급!!!");
+				resultMap.put("access-token", accessToken);
+				status = HttpStatus.CREATED;
+			}
+		} else {
+			log.debug("리프레쉬토큰도 사용불가!!!!!!!");
+			status = HttpStatus.UNAUTHORIZED;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 }

@@ -13,4 +13,5 @@ public interface MemberRepository {
     void memberModify(MemberDto memberDto) throws Exception;
     void memberDelete(String userId) throws Exception;
     void deleteRefreshToken(Map<String, String> map) throws Exception;
+    Object getRefreshToken(String userid) throws Exception;
 }

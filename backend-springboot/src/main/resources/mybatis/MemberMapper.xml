@@ -68,4 +68,11 @@
 		set token = #{token, jdbcType=VARCHAR}
 		where user_id = #{userId}
 	</update>
+	
+	<!-- refresh token 받아오기 -->
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from members
+		where user_id = #{userId}
+	</select>
 </mapper>

@@ -67,4 +67,8 @@ public class MemberServiceImpl implements MemberService {
 		map.put("token", null);
 		session.getMapper(MemberRepository.class).deleteRefreshToken(map);
 	}
+	@Override
+	public Object getRefreshToken(String userId) throws Exception {
+		return session.getMapper(MemberRepository.class).getRefreshToken(userId);
+	}
 }

@@ -56,7 +56,11 @@ public class MemberRepositoryImpl implements MemberRepository {
 
 	@Override
 	public void deleteRefreshToken(Map<String, String> map) throws Exception {
-
 		session.update(NAMESPACE + "deleteRefreshToken", map);
+	}
+
+	@Override
+	public Object getRefreshToken(String userid) throws Exception {
+		return session.selectOne(NAMESPACE + "getRefreshToken", userid);
 	}
 }
