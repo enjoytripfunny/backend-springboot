@@ -20,4 +20,5 @@ public class MapRestoLikeDto {
 //	private List<String> tags; //맛지도에 대한 태그
 	private String registerTime; //맛지도 만들어진 날짜
 	private String likeValue;
+	private String likeCount;
 }

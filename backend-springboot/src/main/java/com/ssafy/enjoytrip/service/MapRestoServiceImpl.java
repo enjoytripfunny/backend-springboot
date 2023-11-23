@@ -93,8 +93,8 @@ public class MapRestoServiceImpl implements MapRestoService {
 	}
 
 	@Override
-	public int getTotalMapResto() throws Exception {
-		return session.getMapper(MapRestoRepository.class).getTotalMapResto();
+	public int getTotalMapResto(String checkUserId) throws Exception {
+		return session.getMapper(MapRestoRepository.class).getTotalMapResto(checkUserId);
 	}
 
 	@Override
@@ -147,7 +147,9 @@ public class MapRestoServiceImpl implements MapRestoService {
 	}
 
 	@Override
+	
 	public void changeLike(LikeInfoDto likeInfo) throws Exception {
+		session.getMapper(MapRestoRepository.class).updateLikeMapResto(likeInfo);
 		session.getMapper(MapRestoRepository.class).changeLike(likeInfo);
 	}
 

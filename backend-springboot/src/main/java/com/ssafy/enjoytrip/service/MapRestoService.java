@@ -25,7 +25,7 @@ public interface MapRestoService {
 	List<MapRestoLikeDto> getMapRestosList(MapRestoListParamDto param) throws Exception;
 //	List<MapRestoDto> getMapRestosList(int num) throws Exception;
 	void registerFileTest(FileInfoDto file) throws Exception;
-	int getTotalMapResto() throws Exception;
+	int getTotalMapResto(String checkUserId) throws Exception;
 	List<MapRestoMypageDto> getMyMapResto(Map<String, Object> map) throws Exception;
 	List<MapRestoMypageDto> getLikeMapResto(Map<String, Object> map) throws Exception;
 	MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception;

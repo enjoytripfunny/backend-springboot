@@ -23,7 +23,7 @@ public interface MapRestoRepository {
 	List<MapRestoLikeDto> getMapRestosList(Map<String, Object> param) throws Exception; //좋아요 값 제외 맛지도 목록 불러오기
 	List<MapRestoLikeDto> getMapRestosLikeList(MapRestoListParamDto param) throws Exception; //좋아요 포함 맛지도 목록 불러오기
 	FileInfoDto getFileInfo(String mapRestoNo) throws Exception; // 파일 정보 불러오기
-	int getTotalMapResto() throws Exception; // 맛지도 목록 개수
+	int getTotalMapResto(String checkUserId) throws Exception; // 맛지도 목록 개수
 	List<MapRestoMypageDto> getMyMapResto(Map<String, Object> param) throws Exception; // 내가 작성한 맛지도 불러오기
 	List<MapRestoMypageDto> getLikeMapResto(Map<String, Object> param) throws Exception; // 좋아요한 맛지도 불러오기
 	MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception; // 맛지도 상세보기
@@ -32,4 +32,6 @@ public interface MapRestoRepository {
 	int getTotalLikeMapResto(String userId) throws Exception; // 좋아요한 맛지도 총개수
 	List<RestoDto> getUserRestoList(String mapRestoNo) throws Exception; // 맛지도에 등록된 식당들 가져오기
 	void changeLike(LikeInfoDto likeInfo) throws Exception; // 좋아요 누르기
+	void updateLikeMapResto(LikeInfoDto likeInfo) throws Exception; // 식당의 좋아요 count 변경
+	List<MapRestoLikeDto> getFiterMyMapResto(MapRestoListParamDto param) throws Exception; // 필터링해서 맛지도 리스트 가져오기
 }

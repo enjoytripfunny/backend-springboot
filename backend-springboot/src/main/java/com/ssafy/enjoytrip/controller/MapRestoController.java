@@ -115,7 +115,7 @@ public class MapRestoController {
 		try {
 			Map<String,Object> map = new HashMap();
 			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(param);
-			int total = mapRestoService.getTotalMapResto();
+			int total = mapRestoService.getTotalMapResto(param.getCheckUserId());
 			map.put("list", mapRestosList);
 			map.put("total", total);
 			HttpHeaders header = new HttpHeaders();

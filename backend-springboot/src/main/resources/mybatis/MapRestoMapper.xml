@@ -30,6 +30,7 @@
 		<result column="subject" property="subject"/>
 		<result column="register_time" property="registerTime"/>
 		<result column="like_value" property="likeValue"/>
+		<result column="like_count" property="likeCount"/>
 	</resultMap>
 	
 	<!-- 맛집 매핑 -->
@@ -141,18 +142,32 @@
 		select map_resto_no_pk, user_id_fk, subject, content, register_time 
 		from map_restaurant
 		limit #{start}, #{listsize}
+		
+<!-- 		order by #{orderkey} #{ordervalue}
+		select map_resto_no_pk, user_id_fk, subject, content, register_time 
+		from map_restaurant
+		order by register_time desc;
+		limit #{start}, #{listsize} -->
 	</select>
 	
 	<!-- 맛지도 리스트와 좋아요까지 가져오기 -->
 	<select id="getMapRestosLikeList" parameterType="mapRestoListParamDto" resultMap="mapRestoLike">
-<!-- 		select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time, li.like_value
-		from map_restaurant mr
-		left join like_info li
-		on mr.map_resto_no_pk = li.map_resto_no_fk
-		limit #{start}, #{listsize} -->
-		select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time,
+		select mr.map_resto_no_pk, mr.user_id_fk, mr.subject, mr.register_time, mr.like_count,
 		(select like_value from like_info where user_id_fk = #{userId} and mr.map_resto_no_pk = map_resto_no_fk) as like_value
 		from map_restaurant mr
+		<if test="checkUserId != ''">
+			where user_id_fk = #{checkUserId}
+		</if>
+		order by
+		<if test="orderkey == 'like_count'">
+			like_count
+		</if>
+		<if test="orderkey == 'register_time'">
+			register_time
+		</if>
+ 		<if test="ordervalue == 'desc'">
+			desc
+		</if>
 		limit 0, #{total}
 	</select>
 	
@@ -184,6 +199,14 @@
 		ON DUPLICATE KEY UPDATE like_value = #{likeValue}
 	</insert>
 	<!-- 게시물의 좋아요 수 변경 -->
+	<update id="updateLikeMapResto" parameterType="likeInfoDto">
+<!-- 		update restaurant 
+		set like_count = like_count + #{likeValue}
+		where resto_no_pk = #{mapRestoNo} -->
+		update map_restaurant 
+		set like_count = like_count + #{likeValue}
+		where map_resto_no_pk = #{mapRestoNo}
+	</update>
 	
 	<!-- 내가 작성한 맛지도 가져오기 -->
 	<select id = "getMyMapResto" parameterType = "map" resultMap="mapRestoMypage">
@@ -208,9 +231,12 @@
 	</select>
 	
 	<!-- 맛지도 총개수 가져오기 -->
-	<select id="getTotalMapResto" resultType="int">
+	<select id="getTotalMapResto" parameterType="string" resultType="int">
 		select count(*) 
 		from map_restaurant
+		<if test="checkUserId != ''">
+			where user_id_fk = #{checkUserId}
+		</if>
 	</select>
 	
 	<!-- 태그 저장 -->
@@ -243,6 +269,17 @@
 		join user_restaurant ur
 		on r.resto_api_id = ur.resto_api_id_fk
 		where ur.map_resto_no_fk = #{mapRestoNo}
+	</select>
+	
+	<!-- 내가 작성한 맛지도 리스트 불러오기 -->
+	<select id = "getFiterMyMapResto" parameterType="map" resultMap="mapResto">
+		select map_resto_no_pk, user_id_fk, subject, content, register_time 
+		from map_restaurant
+		<if test="userId != ''">
+			where user_id_fk = #{userId}
+		</if>
+		order by #{orderkey} #{ordervalue}
+		limit #{start}, #{listsize}
 	</select>
 
 </mapper>

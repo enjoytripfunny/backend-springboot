@@ -83,7 +83,7 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	}
 
 	@Override
-	public int getTotalMapResto() throws Exception {
+	public int getTotalMapResto(String checkUserId) throws Exception {
 		return session.selectOne(NAMESPACE + "getTotalMapResto");
 	}
 
@@ -125,6 +125,16 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 	@Override
 	public void changeLike(LikeInfoDto likeInfo) throws Exception {
 		session.insert(NAMESPACE + "changeLike", likeInfo);
+	}
+
+	@Override
+	public List<MapRestoLikeDto> getFiterMyMapResto(MapRestoListParamDto param) throws Exception {
+		return session.selectList(NAMESPACE + "getFiterMyMapResto", param);
+	}
+
+	@Override
+	public void updateLikeMapResto(LikeInfoDto likeInfo) throws Exception {
+		session.update(NAMESPACE + "updateLikeMapResto", likeInfo);
 	}
 
 }
