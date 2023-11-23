@@ -126,7 +126,8 @@ public class MapRestoServiceImpl implements MapRestoService {
 	@Override
 	public MapRestoDto getDetailMapResto(String mapRestoNo) throws Exception {
 		MapRestoDto detailMapResto = session.getMapper(MapRestoRepository.class).getDetailMapResto(mapRestoNo);
-//		detailMapResto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoNo));
+		detailMapResto.setFileInfo(session.getMapper(MapRestoRepository.class).getFileInfo(mapRestoNo));
+		
 		return detailMapResto;
 	}
 

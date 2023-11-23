@@ -144,7 +144,7 @@ public class MemberController {
 
     @PostMapping("modify")
     public ResponseEntity<?> modify(@RequestBody MemberDto memberDto) throws Exception {
-
+    	System.out.println("회원정보 수정");
         Map<String, String> map = new HashMap<>();
         service.memberModify(memberDto);
         map.put("msg", "success");
@@ -152,7 +152,7 @@ public class MemberController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam String userId) throws Exception {
 
         Map<String, String> map = new HashMap<>();

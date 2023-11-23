@@ -71,7 +71,6 @@ public class MapRestoController {
 		log.info("MapRestoController makeMapRestaurant mapResto: {}", mapResto);
 
 		MultipartFile fileInfo = mapResto.getFile();
-		System.out.println("file: " + fileInfo);
 		
 		if (fileInfo != null) {
 			String today = new SimpleDateFormat("yyMMdd").format(new Date());
@@ -88,15 +87,14 @@ public class MapRestoController {
 					fileInfoDto.setSaveFolder(today);
 					fileInfoDto.setOriginalFile(originalFileName);
 					fileInfoDto.setSaveFile(saveFileName);
-					System.out.println("fileInfoDto: " + fileInfoDto.toString());
 //					logger.debug("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", fileInfo.getOriginalFilename(), saveFileName);
 					try {
 						fileInfo.transferTo(new File(folder, saveFileName));
 					} catch (IllegalStateException e) {
-						System.out.println("파일 업록드 에러");
+						System.out.println("파일 업로드 에러");
 						e.printStackTrace();
 					} catch (IOException e) {
-						System.out.println("파일 업록드 에러");
+						System.out.println("파일 업로드 에러");
 						e.printStackTrace();
 					}
 				}
@@ -114,7 +112,6 @@ public class MapRestoController {
 	@PostMapping("/list")
 	public ResponseEntity<?> listMapRestaurant(@RequestBody MapRestoListParamDto param) {
 		log.info("MapRestoController listMapRestaurant param: {}", param.toString());
-		System.out.println(param.toString());
 		try {
 			Map<String,Object> map = new HashMap();
 			List<MapRestoLikeDto> mapRestosList = mapRestoService.getMapRestosList(param);
@@ -175,11 +172,9 @@ public class MapRestoController {
 			Map<String,Object> param = new HashMap(); // 인자값 담을 map
 			param.put("userId", userId);
 			param.put("num", num);
-			System.out.println("param: " + param);
 			Map<String,Object> result = new HashMap(); // 결과 담을 map
 			List<MapRestoMypageDto> myMapResto = mapRestoService.getMyMapResto(param);
 			int totalMyMapResto = mapRestoService.getTotalMyMapResto(userId);
-			System.out.println("myMapResto List: " + myMapResto);
 			result.put("myMapList", myMapResto);
 			result.put("totalMyMapResto", totalMyMapResto);
 			HttpHeaders header = new HttpHeaders();
@@ -234,7 +229,6 @@ public class MapRestoController {
 	// 좋아요 값 변경
 	@PostMapping("/like")
 	public ResponseEntity<?> changeLike(@RequestBody LikeInfoDto likeInfo) {
-		System.out.println("좋아요 누름 likeInfo: " + likeInfo);
 		try {
 			Map<String,Object> map = new HashMap();
 			mapRestoService.changeLike(likeInfo);
@@ -249,7 +243,6 @@ public class MapRestoController {
 	// 특정 맛지도에 저장된 식당들 가져오기
 	@GetMapping("/userResto/{mapRestoNo}")
 	public ResponseEntity<?> getUserMapResto(@PathVariable("mapRestoNo") String mapRestoNo) {
-		System.out.println("getUserMapResto mapRestoNo:" + mapRestoNo);
 		try {
 			Map<String,Object> map = new HashMap();
 			MapRestoDto detailMapResto = mapRestoService.getDetailMapResto(mapRestoNo);
