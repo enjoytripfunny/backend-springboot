@@ -34,4 +34,6 @@ public interface MapRestoRepository {
 	void changeLike(LikeInfoDto likeInfo) throws Exception; // 좋아요 누르기
 	void updateLikeMapResto(LikeInfoDto likeInfo) throws Exception; // 식당의 좋아요 count 변경
 	List<MapRestoLikeDto> getFiterMyMapResto(MapRestoListParamDto param) throws Exception; // 필터링해서 맛지도 리스트 가져오기
+	List<RestoDto> getAllResto() throws Exception; // 전체 맛집 들고오기
+	List<RestoDto> getTagResto(String tag) throws Exception; // 태그별 맛집 들고오기
 }

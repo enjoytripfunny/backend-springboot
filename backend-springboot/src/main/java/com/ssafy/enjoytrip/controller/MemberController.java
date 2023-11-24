@@ -134,11 +134,11 @@ public class MemberController {
 
         if (idCheck(memberDto.getUserId())) {
             map.put("msg", "false");
-            return new ResponseEntity<>(map, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(map, HttpStatus.OK);
         } else {
             service.signup(memberDto);
             map.put("msg", "true");
-            return new ResponseEntity<>(map, HttpStatus.CREATED);
+            return new ResponseEntity<>(map, HttpStatus.OK);
         }
     }
 

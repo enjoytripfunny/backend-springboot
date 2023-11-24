@@ -256,4 +256,20 @@ public class MapRestoController {
 			return exceptionHandling(e);
 		}
 	}
+	
+	// 맛집 목록 가져오기
+	@GetMapping("/listResto")
+	public ResponseEntity<?> getRestoList(@RequestParam("tag") String tag) {
+		System.out.println("맛집 목록 가져와 tag" + tag);
+		try {
+			Map<String,Object> map = new HashMap();
+			List<RestoDto> resto = mapRestoService.getResto(tag);
+			map.put("list", resto);
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(map);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
 }

@@ -137,4 +137,14 @@ public class MapRestoRepositoryImpl implements MapRestoRepository {
 		session.update(NAMESPACE + "updateLikeMapResto", likeInfo);
 	}
 
+	@Override
+	public List<RestoDto> getAllResto() throws Exception {
+		return session.selectList(NAMESPACE + "getAllResto");
+	}
+
+	@Override
+	public List<RestoDto> getTagResto(String tag) throws Exception {
+		return session.selectList(NAMESPACE + "getTagResto", tag);
+	}
+
 }

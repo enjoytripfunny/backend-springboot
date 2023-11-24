@@ -21,6 +21,6 @@ public class RestoDto {
 	private String longitude; //음식점 경도
 //	private String likeCount; //좋아요개수
 //	private String totalScore; //총 점수
-//	private String saveCount; //음식점 저장한 사용자 수
+	private String saveCount; //음식점 저장한 사용자 수
 	
 }

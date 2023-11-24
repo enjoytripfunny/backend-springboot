@@ -33,4 +33,5 @@ public interface MapRestoService {
 	int getTotalLikeMapResto(String userId) throws Exception; // 좋아요한 맛지도 총개수
 	List<RestoDto> getUserRestoList(String mapRestoNo) throws Exception; // 맛지도에 등록된 식당들 가져오기
 	void changeLike(LikeInfoDto likeInfo) throws Exception;
+	List<RestoDto> getResto(String tag) throws Exception; // 맛집 정보들 가져오기
 }

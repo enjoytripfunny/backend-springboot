@@ -43,9 +43,9 @@
 		<result column="address" property="address"/>
 		<result column="latitude" property="latitude"/>
 		<result column="longitude" property="longitude"/>
-<!-- 		<result column="like_count" property="likeCount"/>
-		<result column="total_score" property="totalScore"/>
-		<result column="save_count" property="saveCount"/> -->
+<!--  		<result column="like_count" property="likeCount"/>
+		<result column="total_score" property="totalScore"/> -->
+		<result column="save_count" property="saveCount"/>
 	</resultMap> 
 	
 	<resultMap type="mapRestoDto" id="mapRestoFile">
@@ -280,6 +280,27 @@
 		</if>
 		order by #{orderkey} #{ordervalue}
 		limit #{start}, #{listsize}
+	</select>
+	
+	<!-- 전체 맛집 가져오기 -->
+	<select id="getAllResto" resultMap="resto">
+		select * from restaurant
+	</select>
+	
+	<!-- 태그들을 바탕으로 맛집 가져오기 -->
+	<select id="getTagResto" parameterType="string" resultMap="resto">
+		select *
+		from restaurant r
+		where r.resto_api_id
+		in (
+		select ur.resto_api_id_fk
+		from user_restaurant ur
+		where ur.map_resto_no_fk in
+		(select mr.map_resto_no_pk 
+		from map_restaurant mr
+		join tags t
+		on mr.map_resto_no_pk = t.map_resto_no_fk
+		where tag = #{tag}))
 	</select>
 
 </mapper>

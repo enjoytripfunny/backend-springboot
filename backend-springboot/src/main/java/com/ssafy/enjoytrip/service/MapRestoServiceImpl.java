@@ -153,4 +153,13 @@ public class MapRestoServiceImpl implements MapRestoService {
 		session.getMapper(MapRestoRepository.class).changeLike(likeInfo);
 	}
 
+	@Override
+	public List<RestoDto> getResto(String tag) throws Exception {
+		if (tag == "전체") {
+			return session.getMapper(MapRestoRepository.class).getAllResto();
+		} else {
+			return session.getMapper(MapRestoRepository.class).getTagResto(tag);			
+		}
+	}
+
 }
